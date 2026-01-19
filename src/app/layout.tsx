@@ -13,8 +13,11 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ABHRA'S PORTFOLIO",
+  title: "Portfolio | Abhra",
   description: "A portfolio that behaves like a product, not a webpage.",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({

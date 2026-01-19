@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { MoveRight, MoveLeft } from "lucide-react";
+import { MoveRight, MoveLeft, Brain, Wrench, Rocket } from "lucide-react";
 import { PORTFOLIO_DATA } from "@/data/portfolio";
 
 interface ChapterOriginProps {
@@ -21,16 +21,42 @@ export default function ChapterOrigin({ onNext, onPrevious }: ChapterOriginProps
 
     const philosophyCards = [
         {
-            title: "Focus",
-            description: "Building products that matter, not just features that ship."
+            icon: Brain,
+            title: "How I Think",
+            subtitle: "Problem-solving philosophy",
+            description: "I don't start with components — I start with intent. Every interface is a system of states, constraints, and decisions.",
+            points: [
+                "What problem is the user actually trying to solve?",
+                "What happens when things go wrong?",
+                "Which decisions should the system make automatically?"
+            ],
+            conclusion: "I believe clarity is the result of deep thinking, not fewer features."
         },
         {
-            title: "Mindset",
-            description: "Every design decision is an engineering constraint. Every constraint is creative fuel."
+            icon: Wrench,
+            title: "How I Build",
+            subtitle: "Execution & craftsmanship",
+            description: "I design flows before screens and structure before styling. My focus is on predictability, readability, and scale.",
+            points: [
+                "Component systems that grow without breaking",
+                "State that is explicit, not magical",
+                "Animations that guide attention, not distract it",
+                "Performance that's felt, not just measured"
+            ],
+            conclusion: "I optimize for the developer who will read this code next — sometimes that developer is future-me."
         },
         {
-            title: "What I value",
-            description: "Performance, clarity, and the invisible details that make experiences feel right."
+            icon: Rocket,
+            title: "How I Ship",
+            subtitle: "Delivery & iteration",
+            description: "Shipping is not the end — it's feedback. I ship early to learn fast, then refine with intention.",
+            points: [
+                "Release with a clear goal",
+                "Observe real usage",
+                "Remove friction",
+                "Improve what actually matters"
+            ],
+            conclusion: "Polish comes from iteration, not perfection."
         }
     ];
 
@@ -122,11 +148,11 @@ export default function ChapterOrigin({ onNext, onPrevious }: ChapterOriginProps
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5, duration: 1 }}
-                        className="relative hidden md:flex items-center justify-center min-h-[400px]"
+                        className="relative hidden md:flex items-center justify-center min-h-96"
                     >
                         {/* Ambient glow */}
                         <motion.div 
-                            className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-cyan-500/5 rounded-2xl blur-2xl"
+                            className="absolute inset-0 bg-linear-to-br from-emerald-500/5 via-transparent to-cyan-500/5 rounded-2xl blur-2xl"
                             animate={{
                                 opacity: [0.3, 0.5, 0.3]
                             }}
@@ -180,8 +206,8 @@ export default function ChapterOrigin({ onNext, onPrevious }: ChapterOriginProps
                                     <span className="text-green-300">&quot;Abhra Jaiswal&quot;</span>
                                     <span className="text-zinc-400">,</span>
                                 </motion.div>
-{/* mindset: "Learn → Build → Iterate",
-status: "Shipping" */}
+
+
                                 <motion.div 
                                     initial={{ opacity: 0, x: -20 }}
                                     animate={{ opacity: 1, x: 0 }}
@@ -232,7 +258,7 @@ status: "Shipping" */}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1.5, duration: 0.8 }}
-                    className="grid md:grid-cols-3 gap-8"
+                    className="grid md:grid-cols-3 gap-8 mt-12 md:mt-16"
                 >
                     {philosophyCards.map((card, index) => (
                         <motion.div
@@ -267,13 +293,32 @@ status: "Shipping" */}
                                     boxShadow: "0 10px 30px -10px rgba(16, 185, 129, 0.3)"
                                 }}
                                 transition={{ duration: 0.3 }}
-                                className="rounded-lg"
+                                className="rounded-lg space-y-4"
                             >
-                                <h3 className="text-xl font-semibold text-emerald-400 mb-4">
-                                    {card.title}
-                                </h3>
+                                <div className="flex items-center gap-3 mb-2">
+                                    <card.icon className="w-6 h-6 text-emerald-400" />
+                                    <h3 className="text-2xl font-semibold text-white">
+                                        {card.title}
+                                    </h3>
+                                </div>
+                                <p className="text-emerald-400 text-xs font-mono uppercase tracking-wider">
+                                    {card.subtitle}
+                                </p>
                                 <p className="text-zinc-300 leading-relaxed text-sm">
                                     {card.description}
+                                </p>
+                                
+                                <ul className="space-y-2 mt-4">
+                                    {card.points.map((point, i) => (
+                                        <li key={i} className="text-zinc-400 text-sm flex items-start gap-2">
+                                            <span className="text-emerald-500 mt-1">•</span>
+                                            <span>{point}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                                
+                                <p className="text-zinc-500 text-sm italic mt-4 pt-4 border-t border-emerald-500/10">
+                                    {card.conclusion}
                                 </p>
                             </motion.div>
                         </motion.div>

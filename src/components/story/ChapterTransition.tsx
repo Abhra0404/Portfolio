@@ -70,7 +70,7 @@ export default function ChapterTransition({
                         delay: 0.4,
                         ease: "easeInOut"
                     }}
-                    className="h-[1px] bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent"
+                    className="h-px bg-linear-to-r from-transparent via-emerald-500/50 to-transparent"
                 />
 
                 {/* Subtext */}

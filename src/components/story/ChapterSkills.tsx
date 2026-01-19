@@ -196,7 +196,7 @@ export default function ChapterSkills({ onNext, onPrevious }: ChapterSkillsProps
                                                     initial={{ scaleX: 0 }}
                                                     whileHover={{ scaleX: 1 }}
                                                     transition={{ duration: 0.3 }}
-                                                    className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-emerald-400 to-transparent origin-left"
+                                                    className="absolute top-0 left-0 w-full h-0.5 bg-linear-to-r from-emerald-400 to-transparent origin-left"
                                                     style={{
                                                         boxShadow: "0 0 15px rgba(16, 185, 129, 0.5)"
                                                     }}
@@ -251,13 +251,13 @@ export default function ChapterSkills({ onNext, onPrevious }: ChapterSkillsProps
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.8 }}
-                                className="bg-gradient-to-r from-zinc-900/50 to-transparent border-l-2 border-emerald-500/50 p-8 rounded-lg mb-16"
+                                className="bg-linear-to-r from-zinc-900/50 to-transparent border-l-2 border-emerald-500/50 p-8 rounded-lg mb-16"
                             >
                                 <h3 className="text-lg font-semibold text-emerald-500 mb-4 flex items-center gap-3">
                                     <span>Currently Learning</span>
                                     {/* Animated dotted line */}
                                     <motion.div
-                                        className="flex-1 h-[1px] relative overflow-hidden"
+                                        className="flex-1 h-px relative overflow-hidden"
                                     >
                                         <motion.div
                                             className="absolute inset-0 border-t-2 border-dotted border-emerald-500/30"
