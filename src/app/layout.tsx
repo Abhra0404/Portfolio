@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: "Portfolio | Abhra",
   description: "A portfolio that behaves like a product, not a webpage.",
   icons: {
-    icon: "/favicon.svg",
+    icon: "/favicon.ico",
   },
 };
 
