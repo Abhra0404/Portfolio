@@ -2,11 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Lock, LockOpen, Code, Palette, Zap, Wrench } from "lucide-react";
+import { Lock, LockOpen, Code, Palette, Zap, Wrench, MoveRight, MoveLeft } from "lucide-react";
 import { PORTFOLIO_DATA } from "@/data/portfolio";
 
 interface ChapterSkillsProps {
     onNext: () => void;
+    onPrevious?: () => void;
 }
 
 interface SkillModule {
@@ -30,27 +31,26 @@ const skillModules: SkillModule[] = [
         title: "Backend",
         icon: Wrench,
         skills: PORTFOLIO_DATA.skills.backend,
-        color: "blue"
+        color: "purple"
     },
     {
         id: "tools",
         title: "Tooling",
         icon: Zap,
         skills: PORTFOLIO_DATA.skills.tools,
-        color: "violet"
+        color: "pink"
     },
     {
         id: "design",
         title: "UI/UX",
         icon: Palette,
         skills: ["Figma", "Design Systems", "Motion Design", "Accessibility"],
-        color: "pink"
+        color: "blue"
     }
 ];
 
-export default function ChapterSkills({ onNext }: ChapterSkillsProps) {
+export default function ChapterSkills({ onNext, onPrevious }: ChapterSkillsProps) {
     const [unlocked, setUnlocked] = useState(false);
-    const [expandedModule, setExpandedModule] = useState<string | null>(null);
 
     // Scene 2.1 - Auto-trigger unlock animation
     useEffect(() => {
@@ -59,6 +59,7 @@ export default function ChapterSkills({ onNext }: ChapterSkillsProps) {
         }, 500);
         return () => clearTimeout(timer);
     }, []);
+
 
     return (
         <section className="min-h-screen w-full flex flex-col justify-center px-8 md:px-16 py-20">
@@ -71,7 +72,7 @@ export default function ChapterSkills({ onNext }: ChapterSkillsProps) {
                         exit={{ opacity: 0 }}
                         className="flex flex-col items-center justify-center min-h-[60vh]"
                     >
-                        {/* Central unlock pulse */}
+                        {/* Central unlock pulse with emerald glow */}
                         <motion.div
                             initial={{ scale: 0.8, opacity: 0 }}
                             animate={{ 
@@ -85,7 +86,7 @@ export default function ChapterSkills({ onNext }: ChapterSkillsProps) {
                             className="relative"
                         >
                             <motion.div
-                                className="absolute inset-0 bg-emerald-500/20 rounded-full blur-3xl"
+                                className="absolute inset-0 bg-emerald-500/30 rounded-full blur-3xl"
                                 animate={{
                                     scale: [1, 1.5, 1],
                                     opacity: [0.5, 0.8, 0.5]
@@ -95,7 +96,21 @@ export default function ChapterSkills({ onNext }: ChapterSkillsProps) {
                                     repeat: Infinity
                                 }}
                             />
-                            <Lock className="w-24 h-24 text-emerald-500 relative z-10" />
+                            <motion.div
+                                animate={{
+                                    textShadow: [
+                                        "0 0 10px rgba(16, 185, 129, 0.3)",
+                                        "0 0 25px rgba(16, 185, 129, 0.6)",
+                                        "0 0 10px rgba(16, 185, 129, 0.3)"
+                                    ]
+                                }}
+                                transition={{
+                                    duration: 2,
+                                    repeat: Infinity
+                                }}
+                            >
+                                <Lock className="w-24 h-24 text-emerald-400 relative z-10" />
+                            </motion.div>
                         </motion.div>
 
                         <motion.p
@@ -120,7 +135,7 @@ export default function ChapterSkills({ onNext }: ChapterSkillsProps) {
                             <motion.p
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className="text-emerald-500 font-mono text-sm tracking-wider mb-8"
+                                className="text-emerald-400 font-mono text-sm tracking-wider mb-8"
                             >
                                 CHAPTER 2: SKILLS UNLOCKED
                             </motion.p>
@@ -138,7 +153,6 @@ export default function ChapterSkills({ onNext }: ChapterSkillsProps) {
                             <div className="grid md:grid-cols-2 gap-6 mb-16">
                                 {skillModules.map((module, index) => {
                                     const Icon = module.icon;
-                                    const isExpanded = expandedModule === module.id;
 
                                     return (
                                         <motion.div
@@ -172,50 +186,41 @@ export default function ChapterSkills({ onNext }: ChapterSkillsProps) {
                                             <motion.div
                                                 whileHover={{ y: -4 }}
                                                 transition={{ duration: 0.2 }}
-                                                onClick={() => setExpandedModule(isExpanded ? null : module.id)}
-                                                className="relative bg-zinc-900/50 border border-zinc-800 rounded-lg p-6 cursor-pointer hover:border-emerald-500/50 transition-colors overflow-hidden"
+                                                className={`relative bg-zinc-900/30 backdrop-blur border border-emerald-500/20 rounded-lg p-6 cursor-default hover:border-emerald-400/50 transition-colors overflow-hidden`}
+                                                style={{
+                                                    boxShadow: "0 0 20px rgba(16, 185, 129, 0.05)"
+                                                }}
                                             >
-                                                {/* Accent border animation */}
+                                                {/* Accent border animation with emerald glow */}
                                                 <motion.div
                                                     initial={{ scaleX: 0 }}
                                                     whileHover={{ scaleX: 1 }}
                                                     transition={{ duration: 0.3 }}
-                                                    className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-emerald-500 to-transparent origin-left"
+                                                    className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-emerald-400 to-transparent origin-left"
+                                                    style={{
+                                                        boxShadow: "0 0 15px rgba(16, 185, 129, 0.5)"
+                                                    }}
                                                 />
 
                                                 <div className="flex items-start justify-between mb-4">
                                                     <div className="p-3 bg-emerald-500/10 rounded-lg">
-                                                        <Icon className="w-6 h-6 text-emerald-500" />
+                                                        <Icon className="w-6 h-6 text-emerald-400" />
                                                     </div>
-                                                    <motion.div
-                                                        animate={{ rotate: isExpanded ? 180 : 0 }}
-                                                        transition={{ duration: 0.3 }}
-                                                    >
-                                                        <LockOpen className="w-5 h-5 text-emerald-500/60" />
-                                                    </motion.div>
+                                                    <div>
+                                                        <LockOpen className="w-5 h-5 text-emerald-400/60" />
+                                                    </div>
                                                 </div>
 
                                                 <h3 className="text-2xl font-semibold text-white mb-2">
                                                     {module.title}
                                                 </h3>
 
-                                                <p className="text-zinc-500 text-sm mb-4">
+                                                <p className="text-zinc-400 text-sm mb-4">
                                                     {module.skills.length} capabilities unlocked
                                                 </p>
 
                                                 {/* Accordion content - smooth height animation */}
-                                                <motion.div
-                                                    initial={false}
-                                                    animate={{
-                                                        height: isExpanded ? "auto" : 0,
-                                                        opacity: isExpanded ? 1 : 0
-                                                    }}
-                                                    transition={{
-                                                        height: { duration: 0.3, ease: "easeInOut" },
-                                                        opacity: { duration: 0.2, delay: isExpanded ? 0.1 : 0 }
-                                                    }}
-                                                    className="overflow-hidden"
-                                                >
+                                                <div className="overflow-visible">
                                                     <div className="pt-4 border-t border-zinc-800 mt-4">
                                                         <div className="flex flex-wrap gap-2">
                                                             {module.skills.map((skill, i) => (
@@ -224,14 +229,17 @@ export default function ChapterSkills({ onNext }: ChapterSkillsProps) {
                                                                     initial={{ opacity: 0, scale: 0.8 }}
                                                                     animate={{ opacity: 1, scale: 1 }}
                                                                     transition={{ delay: i * 0.05 }}
-                                                                    className="px-3 py-1 bg-zinc-800/50 text-zinc-300 text-xs rounded-full"
+                                                                    className="px-3 py-1 bg-emerald-900/30 text-emerald-300 text-xs rounded-full border border-emerald-500/20"
+                                                                    style={{
+                                                                        boxShadow: "0 0 8px rgba(16, 185, 129, 0.2)"
+                                                                    }}
                                                                 >
                                                                     {skill}
                                                                 </motion.span>
                                                             ))}
                                                         </div>
                                                     </div>
-                                                </motion.div>
+                                                </div>
                                             </motion.div>
                                         </motion.div>
                                     );
@@ -265,7 +273,7 @@ export default function ChapterSkills({ onNext }: ChapterSkillsProps) {
                                     </motion.div>
                                 </h3>
                                 <div className="flex flex-wrap gap-3">
-                                    {["Rust", "WebAssembly", "Three.js", "Advanced TypeScript Patterns"].map((item, i) => (
+                                    {["Artifiial Intelligence", "Machine Learning", "DevOps", "Data Structures", "Algorithms"].map((item, i) => (
                                         <motion.span
                                             key={item}
                                             initial={{ opacity: 0, x: -10 }}
@@ -279,20 +287,32 @@ export default function ChapterSkills({ onNext }: ChapterSkillsProps) {
                                 </div>
                             </motion.div>
 
-                            {/* Continue button */}
+                            {/* Navigation buttons */}
                             <motion.div
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 1.2 }}
-                                className="flex justify-center"
+                                className="flex justify-between items-center"
                             >
+                                {onPrevious && (
+                                    <button
+                                        onClick={onPrevious}
+                                        className="group flex items-center gap-4 text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
+                                    >
+                                        <MoveLeft className="w-5 h-5 group-hover:-translate-x-2 transition-transform" />
+                                        <span className="font-mono text-sm tracking-widest uppercase border-b border-emerald-500/30 pb-1 group-hover:border-emerald-400 transition-all">
+                                            Previous: Origin
+                                        </span>
+                                    </button>
+                                )}
                                 <button
                                     onClick={onNext}
-                                    className="group px-8 py-4 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 hover:border-emerald-500/50 rounded-lg transition-all"
+                                    className="group flex items-center gap-4 text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer ml-auto"
                                 >
-                                    <span className="text-emerald-500 font-mono tracking-wider">
-                                        Continue → Projects That Slap
+                                    <span className="font-mono text-sm tracking-widest uppercase border-b border-emerald-500/30 pb-1 group-hover:border-emerald-400 transition-all">
+                                        Next: Projects That Slap
                                     </span>
+                                    <MoveRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
                                 </button>
                             </motion.div>
                         </motion.div>

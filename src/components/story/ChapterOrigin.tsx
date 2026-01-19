@@ -2,13 +2,15 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { MoveRight, MoveLeft } from "lucide-react";
 import { PORTFOLIO_DATA } from "@/data/portfolio";
 
 interface ChapterOriginProps {
     onNext: () => void;
+    onPrevious?: () => void;
 }
 
-export default function ChapterOrigin({ onNext }: ChapterOriginProps) {
+export default function ChapterOrigin({ onNext, onPrevious }: ChapterOriginProps) {
     const [hoveredLine, setHoveredLine] = useState<number | null>(null);
 
     const identityStatements = [
@@ -47,26 +49,59 @@ export default function ChapterOrigin({ onNext }: ChapterOriginProps) {
                         {identityStatements.map((statement, index) => (
                             <motion.div
                                 key={index}
-                                initial={{ opacity: 0, x: 0 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{
-                                    delay: index * 0.3,
-                                    duration: 0.6,
-                                    ease: [0.16, 1, 0.3, 1] // easeOutExpo
-                                }}
                                 onHoverStart={() => setHoveredLine(index)}
                                 onHoverEnd={() => setHoveredLine(null)}
-                                className="cursor-default"
+                                className="cursor-default overflow-hidden relative"
                             >
                                 <motion.h2
                                     animate={{ 
                                         x: hoveredLine === index ? 6 : 0 
                                     }}
                                     transition={{ duration: 0.2 }}
-                                    className="text-4xl md:text-6xl font-light text-white/90 tracking-tight"
+                                    className="text-4xl md:text-6xl font-light text-white/90 tracking-tight relative"
                                 >
-                                    {statement}
+                                    {statement.split('').map((char, charIndex) => (
+                                        <motion.span
+                                            key={charIndex}
+                                            initial={{ 
+                                                opacity: 0,
+                                                y: 20,
+                                                filter: "blur(10px)"
+                                            }}
+                                            animate={{ 
+                                                opacity: 1,
+                                                y: 0,
+                                                filter: "blur(0px)"
+                                            }}
+                                            transition={{
+                                                delay: index * 0.5 + charIndex * 0.03,
+                                                duration: 0.4,
+                                                ease: [0.16, 1, 0.3, 1]
+                                            }}
+                                            className="inline-block"
+                                            style={{ whiteSpace: char === ' ' ? 'pre' : 'normal' }}
+                                        >
+                                            {char}
+                                        </motion.span>
+                                    ))}
                                 </motion.h2>
+                                
+                                {/* Animated underline */}
+                                <motion.div
+                                    initial={{ scaleX: 0, opacity: 0 }}
+                                    animate={{ 
+                                        scaleX: hoveredLine === index ? 1 : 0,
+                                        opacity: hoveredLine === index ? 1 : 0
+                                    }}
+                                    transition={{ 
+                                        duration: 0.4,
+                                        ease: [0.16, 1, 0.3, 1]
+                                    }}
+                                    className="h-0.5 bg-white mt-2 origin-left w-3/4"
+                                    style={{
+                                        boxShadow: "0 0 10px rgba(255, 255, 255, 0.5)"
+                                    }}
+                                />
                             </motion.div>
                         ))}
                         
@@ -82,30 +117,113 @@ export default function ChapterOrigin({ onNext }: ChapterOriginProps) {
                         </motion.div>
                     </motion.div>
 
-                    {/* Right: Abstract UI grid / soft glow */}
+                    {/* Right: Elegant Code Visualization */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5, duration: 1 }}
-                        className="relative hidden md:flex items-center justify-center"
+                        className="relative hidden md:flex items-center justify-center min-h-[400px]"
                     >
-                        <div className="absolute w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl" />
-                        <div className="relative w-full h-full flex items-center justify-center">
-                            <div className="grid grid-cols-4 gap-2">
-                                {Array.from({ length: 16 }).map((_, i) => (
-                                    <motion.div
-                                        key={i}
-                                        initial={{ opacity: 0, scale: 0 }}
-                                        animate={{ opacity: 0.3, scale: 1 }}
-                                        transition={{
-                                            delay: 0.8 + (i * 0.05),
-                                            duration: 0.4
-                                        }}
-                                        className="w-12 h-12 border border-emerald-500/20 rounded-sm"
-                                    />
-                                ))}
+                        {/* Ambient glow */}
+                        <motion.div 
+                            className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-cyan-500/5 rounded-2xl blur-2xl"
+                            animate={{
+                                opacity: [0.3, 0.5, 0.3]
+                            }}
+                            transition={{
+                                duration: 4,
+                                repeat: Infinity,
+                                ease: "easeInOut"
+                            }}
+                        />
+                        
+                        {/* Code window mockup */}
+                        <motion.div 
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ delay: 0.8, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                            className="relative bg-zinc-900/40 backdrop-blur-xl border border-emerald-500/20 rounded-xl p-6 max-w-lg shadow-2xl"
+                            style={{
+                                boxShadow: "0 20px 60px rgba(0, 0, 0, 0.4), 0 0 30px rgba(16, 185, 129, 0.1)"
+                            }}
+                        >
+                            {/* Window controls */}
+                            <div className="flex gap-2 mb-4 pb-4 border-b border-emerald-500/10">
+                                <div className="w-3 h-3 rounded-full bg-red-500/60" />
+                                <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
+                                <div className="w-3 h-3 rounded-full bg-green-500/60" />
                             </div>
-                        </div>
+                            
+                            {/* Code lines with syntax highlighting */}
+                            <div className="font-mono text-sm space-y-2">
+                                <motion.div 
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 1, duration: 0.4 }}
+                                    className="flex gap-3"
+                                >
+                                    <span className="text-zinc-600">1</span>
+                                    <span className="text-purple-400">const</span>
+                                    <span className="text-blue-300">developer</span>
+                                    <span className="text-zinc-400">=</span>
+                                    <span className="text-yellow-300">{`{`}</span>
+                                </motion.div>
+                                
+                                <motion.div 
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 1.2, duration: 0.4 }}
+                                    className="flex gap-3 pl-6"
+                                >
+                                    <span className="text-zinc-600">2</span>
+                                    <span className="text-blue-300">name:</span>
+                                    <span className="text-green-300">&quot;Abhra Jaiswal&quot;</span>
+                                    <span className="text-zinc-400">,</span>
+                                </motion.div>
+{/* mindset: "Learn → Build → Iterate",
+status: "Shipping" */}
+                                <motion.div 
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 1.4, duration: 0.4 }}
+                                    className="flex gap-3 pl-6"
+                                >
+                                    <span className="text-zinc-600">3</span>
+                                    <span className="text-blue-300">mindset:</span>
+                                    <span className="text-green-300">&quot;Learn → Build → Iterate&quot;</span>
+                                    <span className="text-zinc-400">,</span>
+                                </motion.div>
+                                
+                                <motion.div 
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 1.6, duration: 0.4 }}
+                                    className="flex gap-3 pl-6"
+                                >
+                                    <span className="text-zinc-600">4</span>
+                                    <span className="text-blue-300">status:</span>
+                                    <span className="text-green-300">&quot;Shipping&quot;</span>
+                                </motion.div>
+                                
+                                <motion.div 
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 1.8, duration: 0.4 }}
+                                    className="flex gap-3"
+                                >
+                                    <span className="text-zinc-600">5</span>
+                                    <span className="text-yellow-300">{`}`}</span>
+                                    <span className="text-zinc-400">;</span>
+                                </motion.div>
+                            </div>
+                            
+                            {/* Cursor blink */}
+                            <motion.div
+                                animate={{ opacity: [1, 0, 1] }}
+                                transition={{ duration: 1, repeat: Infinity }}
+                                className="inline-block w-2 h-4 bg-emerald-400 ml-1 mt-2"
+                            />
+                        </motion.div>
                     </motion.div>
                 </div>
 
@@ -136,22 +254,25 @@ export default function ChapterOrigin({ onNext }: ChapterOriginProps) {
                                 y: -4,
                                 transition: { duration: 0.2 }
                             }}
-                            className="p-8 bg-zinc-900/50 border border-zinc-800 rounded-lg group hover:border-emerald-500/30 transition-colors"
+                            className="p-8 bg-zinc-900/30 backdrop-blur border border-emerald-500/20 rounded-lg group hover:border-emerald-400/50 transition-colors"
+                            style={{
+                                boxShadow: "0 0 20px rgba(16, 185, 129, 0.05)"
+                            }}
                         >
                             <motion.div
                                 animate={{ 
                                     boxShadow: "0 0 0 0 rgba(16, 185, 129, 0)" 
                                 }}
                                 whileHover={{
-                                    boxShadow: "0 10px 30px -10px rgba(16, 185, 129, 0.2)"
+                                    boxShadow: "0 10px 30px -10px rgba(16, 185, 129, 0.3)"
                                 }}
                                 transition={{ duration: 0.3 }}
                                 className="rounded-lg"
                             >
-                                <h3 className="text-xl font-semibold text-emerald-500 mb-4">
+                                <h3 className="text-xl font-semibold text-emerald-400 mb-4">
                                     {card.title}
                                 </h3>
-                                <p className="text-zinc-400 leading-relaxed">
+                                <p className="text-zinc-300 leading-relaxed text-sm">
                                     {card.description}
                                 </p>
                             </motion.div>
@@ -159,20 +280,32 @@ export default function ChapterOrigin({ onNext }: ChapterOriginProps) {
                     ))}
                 </motion.div>
 
-                {/* Continue button */}
+                {/* Navigation buttons */}
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 2.5, duration: 0.6 }}
-                    className="mt-20 flex justify-center"
+                    className="mt-20 flex justify-between items-center"
                 >
+                    {onPrevious && (
+                        <button
+                            onClick={onPrevious}
+                            className="group flex items-center gap-4 text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
+                        >
+                            <MoveLeft className="w-5 h-5 group-hover:-translate-x-2 transition-transform" />
+                            <span className="font-mono text-sm tracking-widest uppercase border-b border-emerald-500/30 pb-1 group-hover:border-emerald-400 transition-all">
+                                Intro
+                            </span>
+                        </button>
+                    )}
                     <button
                         onClick={onNext}
-                        className="group px-8 py-4 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 hover:border-emerald-500/50 rounded-lg transition-all"
+                        className="group flex items-center gap-4 text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer ml-auto"
                     >
-                        <span className="text-emerald-500 font-mono tracking-wider">
-                            Continue → Skills Unlocked
+                        <span className="font-mono text-sm tracking-widest uppercase border-b border-emerald-500/30 pb-1 group-hover:border-emerald-400 transition-all">
+                            Next: Skills Unlocked
                         </span>
+                        <MoveRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
                     </button>
                 </motion.div>
             </div>

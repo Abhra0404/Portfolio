@@ -13,7 +13,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Abhra.OS - Engineer's Control Room",
+  title: "ABHRA'S PORTFOLIO",
   description: "A portfolio that behaves like a product, not a webpage.",
 };
 

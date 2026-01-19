@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import IntroSequence from "./IntroSequence";
 
 import ChapterOrigin from "./ChapterOrigin";
@@ -25,7 +25,7 @@ export default function StoryContainer() {
     };
 
     return (
-        <main className="min-h-screen bg-black text-white overflow-hidden relative selection:bg-white/20 selection:text-white">
+        <main className="min-h-screen bg-black text-white relative selection:bg-white/20 selection:text-white grid-surface">
             <AnimatePresence mode="wait">
                 {/* INTRO */}
                 {currentState === "intro" && (
@@ -43,7 +43,11 @@ export default function StoryContainer() {
                     />
                 )}
                 {currentState === "origin" && (
-                    <ChapterOrigin key="origin" onNext={() => nextState("transition_skills")} />
+                    <ChapterOrigin 
+                        key="origin" 
+                        onNext={() => nextState("transition_skills")} 
+                        onPrevious={() => nextState("intro")}
+                    />
                 )}
 
                 {/* SKILLS */}
@@ -57,7 +61,11 @@ export default function StoryContainer() {
                     />
                 )}
                 {currentState === "skills" && (
-                    <ChapterSkills key="skills" onNext={() => nextState("transition_projects")} />
+                    <ChapterSkills 
+                        key="skills" 
+                        onNext={() => nextState("transition_projects")} 
+                        onPrevious={() => nextState("origin")}
+                    />
                 )}
 
                 {/* PROJECTS */}
@@ -71,7 +79,11 @@ export default function StoryContainer() {
                     />
                 )}
                 {currentState === "projects" && (
-                    <ChapterProjects key="projects" onNext={() => nextState("transition_contact")} />
+                    <ChapterProjects 
+                        key="projects" 
+                        onNext={() => nextState("transition_contact")} 
+                        onPrevious={() => nextState("skills")}
+                    />
                 )}
 
                 {/* CONTACT */}
@@ -85,7 +97,10 @@ export default function StoryContainer() {
                     />
                 )}
                 {currentState === "contact" && (
-                    <ChapterContact key="contact" />
+                    <ChapterContact 
+                        key="contact" 
+                        onPrevious={() => nextState("projects")}
+                    />
                 )}
             </AnimatePresence>
 
