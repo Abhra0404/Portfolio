@@ -8,7 +8,8 @@ export const PORTFOLIO_DATA = {
         location: "India",
         email: "aforabhra@gmail.com",
         github: "https://github.com/Abhra0404",
-        linkedin: "https://linkedin.com/in/abhra0404"
+        linkedin: "https://linkedin.com/in/abhra0404",
+        instagram: "https://www.instagram.com/_abhra__18/"
     },
     experience: [
         {
@@ -32,7 +33,7 @@ export const PORTFOLIO_DATA = {
     ],
     skills: {
         frontend: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Three.js", "GSAP"],
-        backend: ["Node.js", "ExpressJS", "MongoDB", "Serverless", "System Design"],
-        tools: ["Git", "Docker", "Kubernetes", "Figma", "AWS", "Vercel"]
+        backend: ["Node.js", "ExpressJS", "MongoDB","Supabase","PostgreSQL", "Serverless", "System Design"],
+        tools: ["Git","GitHub", "Docker", "Kubernetes", "Figma", "AWS", "Vercel","UI/UX"]
     }
 };

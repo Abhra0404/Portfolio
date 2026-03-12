@@ -1,11 +1,7 @@
 'use client';
 
-import StoryContainer from '@/components/story/StoryContainer';
+import LandingPage from '@/components/landing/LandingPage';
 
 export default function Home() {
-  return (
-    <main className="min-h-screen relative overflow-hidden">
-      <StoryContainer />
-    </main>
-  );
+  return <LandingPage />;
 }
