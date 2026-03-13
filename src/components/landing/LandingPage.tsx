@@ -18,8 +18,11 @@ import {
     LockOpen,
     Copy,
     Check,
+    X,
 } from "lucide-react";
+import { Pen } from "lucide-react";
 import { PORTFOLIO_DATA } from "@/data/portfolio";
+import Image from "next/image";
 
 const GIT_BADGE_TEXT = "git commit -m \"building things that matter\"";
 
@@ -110,19 +113,17 @@ function Navbar() {
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
 
-    const links = ["About", "Skills", "Projects", "Contact"];
+    const links = ["About", "Skills", "Projects", "Contact", "Blog"];
+    const getNavHref = (link: string) => (link === "Blog" ? "/blog" : `#${link.toLowerCase()}`);
 
     return (
         <motion.nav
             initial={{ y: -80, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-                ? "bg-black/80 backdrop-blur-xl border-b border-white/8"
-                : "bg-transparent"
-                }`}
+            className="fixed top-3 left-0 right-0 z-50 px-3 sm:px-6 transition-all duration-300"
         >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 h-16 flex items-center justify-between">
+            <div className="max-w-7xl mx-auto h-16 flex items-center justify-between gap-3">
                 {/* Logo */}
                 <a href="#hero" className="flex items-center gap-2 group">
                     <div className="w-7 h-7 border border-emerald-500/60 rounded flex items-center justify-center group-hover:border-emerald-400 transition-colors">
@@ -134,18 +135,35 @@ function Navbar() {
                 </a>
 
                 {/* Desktop links */}
-                <ul className="hidden md:flex items-center gap-8">
-                    {links.map((l) => (
-                        <li key={l}>
-                            <a
-                                href={`#${l.toLowerCase()}`}
-                                className="font-mono text-xs tracking-widest uppercase text-zinc-400 hover:text-emerald-400 transition-colors"
-                            >
-                                {l}
-                            </a>
-                        </li>
-                    ))}
-                </ul>
+                <div
+                    className={`hidden md:flex items-center rounded-full border px-6 lg:px-8 h-12 transition-all duration-300 ${scrolled
+                        ? "bg-black/80 backdrop-blur-xl border-white/15 shadow-[0_10px_25px_rgba(0,0,0,0.25)]"
+                        : "bg-black/40 backdrop-blur-md border-white/12"
+                        }`}
+                >
+                    <ul className="flex items-center gap-8">
+                        {links.map((l) => (
+                            <li key={l}>
+                                <a
+                                    href={getNavHref(l)}
+                                    className="font-mono text-xs tracking-widest uppercase text-zinc-400 hover:text-emerald-400 transition-colors"
+                                >
+                                    {l === "Blog" ? (
+                                        <span className="relative inline-flex flex-col pb-2.5">
+                                            <span className="tracking-[0.14em] text-emerald-400">Blog</span>
+                                            <span className="absolute bottom-0 left-0 right-0 flex items-center gap-0.5 opacity-85">
+                                                <svg className="flex-1" height="3" viewBox="0 0 56 3" preserveAspectRatio="none" aria-hidden="true">
+                                                    <path d="M0 1.7 Q7 1.05 14 1.7 Q21 2.35 28 1.7 Q35 1.05 42 1.7 Q49 2.35 56 1.7" stroke="#6ee7b7" strokeWidth="0.55" strokeLinecap="round" fill="none" />
+                                                </svg>
+                                                <Pen size={8} className="text-emerald-300/80 shrink-0 -mb-px rotate-[-18deg]" />
+                                            </span>
+                                        </span>
+                                    ) : l}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
 
                 {/* CTA */}
                 <a
@@ -173,16 +191,26 @@ function Navbar() {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    className="md:hidden bg-black/95 border-b border-white/10 px-6 pb-6 flex flex-col gap-4"
+                    className="md:hidden mt-2 bg-black/95 border border-white/10 rounded-2xl px-6 pb-6 flex flex-col gap-4"
                 >
                     {links.map((l) => (
                         <a
                             key={l}
-                            href={`#${l.toLowerCase()}`}
+                            href={getNavHref(l)}
                             onClick={() => setMenuOpen(false)}
                             className="font-mono text-sm tracking-widest uppercase text-zinc-400 hover:text-emerald-400 transition-colors py-3 border-b border-white/5"
                         >
-                            {l}
+                            {l === "Blog" ? (
+                                <span className="relative inline-flex flex-col pb-2.5">
+                                    <span className="tracking-[0.12em] text-emerald-400">Blog</span>
+                                    <span className="absolute bottom-0 left-0 right-0 flex items-center gap-0.5 opacity-85">
+                                        <svg className="flex-1" height="3" viewBox="0 0 56 3" preserveAspectRatio="none" aria-hidden="true">
+                                            <path d="M0 1.7 Q7 1.05 14 1.7 Q21 2.35 28 1.7 Q35 1.05 42 1.7 Q49 2.35 56 1.7" stroke="#6ee7b7" strokeWidth="0.6" strokeLinecap="round" fill="none" />
+                                        </svg>
+                                        <Pen size={9} className="text-emerald-300/80 shrink-0 -mb-px rotate-[-18deg]" />
+                                    </span>
+                                </span>
+                            ) : l}
                         </a>
                     ))}
                     <a
@@ -840,9 +868,20 @@ const PROJECTS = [
         id: "p1",
         num: "01",
         title: "CryptoX",
-        subtitle: "Crypto Education Platform",
-        desc: "A comprehensive crypto education platform with 200+ lessons, real-time market data, and interactive quizzes — serving 50k+ active users.",
-        stack: ["React", "JavaScript", "Tailwind CSS", "CoinGecko API"],
+        subtitle: "Cryptocurrency Web Platform",
+        desc: "A modern cryptocurrency web platform built to present blockchain projects, tokenomics, and ecosystem information through an interactive, responsive interface.",
+        role: "Frontend Development + UI/UX Engineering",
+        timeline: "2025",
+        status: "Production",
+        impact: "Communicates token distribution, governance, staking, and ecosystem growth through a clear DeFi-focused product experience.",
+        image: "/cryptox.png",
+        stack: ["React", "JavaScript", "Tailwind CSS", "Vercel"],
+        highlights: [
+            "Built a tokenomics dashboard to visualize token allocation, distribution strategy, and ecosystem funding.",
+            "Designed a roadmap experience covering launch phases, ecosystem expansion, and strategic partnerships.",
+            "Presented core crypto utilities including staking, governance voting, community incentives, and innovation rewards.",
+            "Delivered a fully responsive interface optimized for desktop and mobile, deployed globally on Vercel.",
+        ],
         link: "https://crypto-x-virid.vercel.app/",
         github: "https://github.com/Abhra0404/CryptoX",
         accent: "emerald",
@@ -851,9 +890,20 @@ const PROJECTS = [
         id: "p2",
         num: "02",
         title: "Kaizen",
-        subtitle: "Student Productivity Dashboard",
-        desc: "A unified productivity hub for students. Streak-based habit tracking, DSA visualizations, and project management — all in one clean interface.",
-        stack: ["React", "TypeScript", "Charts.js", "Tailwind CSS"],
+        subtitle: "Continuous Improvement Platform",
+        desc: "A modern web application inspired by the Japanese philosophy of continuous improvement, designed to help users organize goals, track progress, and stay consistent in personal development.",
+        role: "Frontend Development + Product Interface Design",
+        timeline: "2025",
+        status: "Production",
+        impact: "Transforms personal growth workflows into a clean, responsive, and highly interactive productivity experience.",
+        image: "/kaizen.png",
+        stack: ["React", "TypeScript", "Tailwind CSS", "Supabase"],
+        highlights: [
+            "Built a goal tracking interface for defining and monitoring personal improvement targets.",
+            "Designed a minimalist dashboard that reduces distractions and keeps focus on progress.",
+            "Implemented a responsive experience optimized for both desktop and mobile devices.",
+            "Used modern UI components and deployed on Vercel for fast, globally available performance.",
+        ],
         link: "https://kaizen-phi-five.vercel.app/",
         github: "https://github.com/Abhra0404/Kaizen",
         accent: "purple",
@@ -864,7 +914,18 @@ const PROJECTS = [
         title: "This Portfolio",
         subtitle: "Story-driven Developer Portfolio",
         desc: "A Netflix-style interactive story portfolio with cinematic transitions, scroll-driven narrative, and 100/100 Lighthouse score.",
+        role: "UI Engineering + Motion Design",
+        timeline: "2026",
+        status: "Live",
+        impact: "Narrative portfolio with strong performance and polished interaction design",
+        image: "",
         stack: ["Next.js", "Framer Motion", "Tailwind CSS", "TypeScript"],
+        highlights: [
+            "Built cinematic section transitions with scroll-aware choreography.",
+            "Optimized animation and rendering paths for smooth interaction.",
+            "Designed responsive layouts with mobile-first interaction tuning.",
+            "Maintained performance-first implementation across visual-heavy UI.",
+        ],
         github: "https://github.com/Abhra0404/portfolio",
         accent: "cyan",
     },
@@ -887,6 +948,28 @@ const accentGlow: Record<string, string> = {
 };
 
 function Projects() {
+    const [selectedProject, setSelectedProject] = useState<(typeof PROJECTS)[number] | null>(null);
+
+    useEffect(() => {
+        if (!selectedProject) {
+            return;
+        }
+
+        const handleEsc = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                setSelectedProject(null);
+            }
+        };
+
+        document.body.style.overflow = "hidden";
+        window.addEventListener("keydown", handleEsc);
+
+        return () => {
+            document.body.style.overflow = "";
+            window.removeEventListener("keydown", handleEsc);
+        };
+    }, [selectedProject]);
+
     return (
         <section id="projects" className="py-24 md:py-36 px-4 sm:px-6 md:px-12">
             <div className="max-w-7xl mx-auto">
@@ -911,9 +994,18 @@ function Projects() {
                     {PROJECTS.map((p, i) => (
                         <FadeUp key={p.id} delay={i * 0.1}>
                             <motion.div
+                                role="button"
+                                tabIndex={0}
+                                onClick={() => setSelectedProject(p)}
+                                onKeyDown={(event) => {
+                                    if (event.key === "Enter" || event.key === " ") {
+                                        event.preventDefault();
+                                        setSelectedProject(p);
+                                    }
+                                }}
                                 whileHover={{ y: -6 }}
                                 transition={{ duration: 0.25 }}
-                                className={`group relative h-full flex flex-col p-5 sm:p-7 bg-zinc-900/30 border border-white/8 rounded-xl transition-all duration-300 overflow-hidden ${accentBorder[p.accent]}`}
+                                className={`group relative h-full flex flex-col p-5 sm:p-7 bg-zinc-900/30 border border-white/8 rounded-xl transition-all duration-300 overflow-hidden cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/40 ${accentBorder[p.accent]}`}
                                 style={{ boxShadow: `0 0 0 0 ${accentGlow[p.accent]}` }}
                                 whileInView={{ boxShadow: `0 20px 60px -20px ${accentGlow[p.accent]}` }}
                                 viewport={{ once: true }}
@@ -939,33 +1031,162 @@ function Projects() {
                                     ))}
                                 </div>
 
-                                {/* Links */}
-                                <div className="flex gap-4 pt-4 border-t border-white/6">
-                                    {p.github && (
-                                        <a
-                                            href={p.github}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="flex items-center gap-1.5 text-zinc-500 hover:text-emerald-400 transition-colors text-xs font-mono"
-                                        >
-                                            <Github className="w-3.5 h-3.5" /> Source
-                                        </a>
-                                    )}
-                                    {p.link && (
-                                        <a
-                                            href={p.link}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="flex items-center gap-1.5 text-zinc-500 hover:text-emerald-400 transition-colors text-xs font-mono"
-                                        >
-                                            <ExternalLink className="w-3.5 h-3.5" /> Live
-                                        </a>
-                                    )}
+                                {/* Details hint */}
+                                <div className="flex items-center justify-between pt-4 border-t border-white/6 text-xs font-mono uppercase tracking-widest">
+                                    <span className="text-zinc-500">Tap for details</span>
+                                    <span className="inline-flex items-center gap-1.5 text-emerald-300/85">
+                                        View <ArrowUpRight className="w-3.5 h-3.5" />
+                                    </span>
                                 </div>
                             </motion.div>
                         </FadeUp>
                     ))}
                 </div>
+
+                {selectedProject && (
+                    <div
+                        className="fixed inset-0 z-60 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+                        onClick={() => {
+                            setSelectedProject(null);
+                        }}
+                    >
+                        <div
+                            className="w-full max-w-3xl max-h-[88vh] overflow-y-auto rounded-2xl border border-emerald-500/25 bg-zinc-950 p-5 sm:p-7 shadow-[0_20px_60px_rgba(0,0,0,0.45)]"
+                            onClick={(event) => event.stopPropagation()}
+                            role="dialog"
+                            aria-modal="true"
+                            aria-label="Project detail view"
+                        >
+                            <div className="flex items-start justify-between gap-4 mb-5 pb-4 border-b border-white/8">
+                                <div>
+                                    <p className="font-mono text-[11px] uppercase tracking-widest text-emerald-300 mb-2">
+                                        Project Details
+                                    </p>
+                                    <h3 className="text-2xl sm:text-3xl font-semibold text-zinc-100 tracking-tight">
+                                        {selectedProject.title}
+                                    </h3>
+                                    <p className={`mt-1 font-mono text-xs ${accentText[selectedProject.accent]}`}>
+                                        {selectedProject.subtitle}
+                                    </p>
+                                </div>
+
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setSelectedProject(null);
+                                    }}
+                                    className="p-1.5 rounded-md text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors"
+                                    aria-label="Close popup"
+                                >
+                                    <X className="w-4 h-4" />
+                                </button>
+                            </div>
+
+                            <p className="text-zinc-300/90 text-sm sm:text-base leading-relaxed mb-6">
+                                {selectedProject.desc}
+                            </p>
+
+                            <div className="mb-6">
+                                <p className="font-mono text-[11px] uppercase tracking-widest text-zinc-500 mb-3">Project Image</p>
+                                <div className="aspect-video w-full rounded-xl border border-white/10 bg-zinc-900/75 overflow-hidden">
+                                    {selectedProject.image ? (
+                                        <Image
+                                            src={selectedProject.image}
+                                            alt={`${selectedProject.title} preview`}
+                                            width={1280}
+                                            height={720}
+                                            className="w-full h-full object-cover object-top"
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center text-center px-4 bg-linear-to-br from-white/5 to-transparent">
+                                            <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed">
+                                                Add image URL in this project&apos;s <span className="text-zinc-300 font-mono">image</span> field
+                                                to show preview here.
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="grid sm:grid-cols-2 gap-3 mb-6">
+                                <div className="rounded-lg border border-white/10 bg-white/3 p-3.5">
+                                    <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest mb-1">Role</p>
+                                    <p className="text-zinc-200 text-sm">{selectedProject.role}</p>
+                                </div>
+                                <div className="rounded-lg border border-white/10 bg-white/3 p-3.5">
+                                    <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest mb-1">Timeline</p>
+                                    <p className="text-zinc-200 text-sm">{selectedProject.timeline}</p>
+                                </div>
+                                <div className="rounded-lg border border-white/10 bg-white/3 p-3.5">
+                                    <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest mb-1">Status</p>
+                                    <p className="text-zinc-200 text-sm">{selectedProject.status}</p>
+                                </div>
+                                <div className="rounded-lg border border-white/10 bg-white/3 p-3.5">
+                                    <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest mb-1">Impact</p>
+                                    <p className="text-zinc-200 text-sm leading-relaxed">{selectedProject.impact}</p>
+                                </div>
+                            </div>
+
+                            <div className="mb-6">
+                                <p className="font-mono text-[11px] uppercase tracking-widest text-zinc-500 mb-3">Highlights</p>
+                                <ul className="space-y-2.5">
+                                    {selectedProject.highlights.map((point) => (
+                                        <li key={point} className="flex items-start gap-2.5 text-zinc-300 text-sm leading-relaxed">
+                                            <span className="text-emerald-400 mt-1">•</span>
+                                            <span>{point}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            <div className="mb-6">
+                                <p className="font-mono text-[11px] uppercase tracking-widest text-zinc-500 mb-3">Tech Stack</p>
+                                <div className="flex flex-wrap gap-2">
+                                {selectedProject.stack.map((tech) => (
+                                    <span
+                                        key={tech}
+                                        className="px-2 py-0.5 bg-white/5 border border-white/10 text-zinc-400 text-[11px] font-mono rounded"
+                                    >
+                                        {tech}
+                                    </span>
+                                ))}
+                                </div>
+                            </div>
+
+                            <div className="flex flex-wrap items-center justify-end gap-2 pt-5 border-t border-white/8">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setSelectedProject(null);
+                                    }}
+                                    className="px-4 py-2 rounded-lg border border-white/12 bg-zinc-900/80 text-zinc-300 hover:text-white transition-colors font-mono text-xs tracking-widest uppercase"
+                                >
+                                    Cancel
+                                </button>
+                                {selectedProject.github && (
+                                    <a
+                                        href={selectedProject.github}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-emerald-500/35 bg-emerald-500/12 text-emerald-300 hover:text-emerald-200 transition-colors font-mono text-xs tracking-widest uppercase"
+                                    >
+                                        Source <Github className="w-3.5 h-3.5" />
+                                    </a>
+                                )}
+                                {selectedProject.link && (
+                                    <a
+                                        href={selectedProject.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-cyan-500/35 bg-cyan-500/12 text-cyan-300 hover:text-cyan-200 transition-colors font-mono text-xs tracking-widest uppercase"
+                                    >
+                                        Live Demo <ExternalLink className="w-3.5 h-3.5" />
+                                    </a>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </section>
     );
@@ -1021,7 +1242,7 @@ function Contact() {
                             </div>
                         ))}
 
-                        <div className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:gap-3 pt-2">
+                        <div className="grid grid-cols-3 gap-2 sm:flex sm:flex-nowrap sm:gap-3 pt-2">
                             {[
                                 { href: PORTFOLIO_DATA.profile.github, icon: Github, label: "GitHub" },
                                 { href: PORTFOLIO_DATA.profile.linkedin, icon: Linkedin, label: "LinkedIn" },
@@ -1121,7 +1342,7 @@ function Footer() {
 
 export default function LandingPage() {
     return (
-        <div className="min-h-screen bg-[#050505] text-white relative">
+        <div className="min-h-screen bg-[#050505] text-white relative overflow-x-clip">
             {/* Background grid */}
             <div
                 className="fixed inset-0 pointer-events-none z-0 opacity-[0.035]"
