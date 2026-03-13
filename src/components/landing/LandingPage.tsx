@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { motion, useScroll, useTransform, useInView, useReducedMotion } from "framer-motion";
 import {
     Github,
     Linkedin,
@@ -13,28 +13,27 @@ import {
     Zap,
     Terminal,
     ChevronDown,
-    Send,
     MapPin,
     Clock,
     LockOpen,
-    CheckCircle,
     Copy,
     Check,
 } from "lucide-react";
 import { PORTFOLIO_DATA } from "@/data/portfolio";
 
+const GIT_BADGE_TEXT = "git commit -m \"building things that matter\"";
+
 /* ─────────────────────────── git badge ─────────────────────────── */
 
 function GitBadge() {
-    const full = `git commit -m "building things that matter"`;
     const [displayed, setDisplayed] = useState("");
 
     useEffect(() => {
         let i = 0;
         const id = setInterval(() => {
             i++;
-            setDisplayed(full.slice(0, i));
-            if (i >= full.length) clearInterval(id);
+            setDisplayed(GIT_BADGE_TEXT.slice(0, i));
+            if (i >= GIT_BADGE_TEXT.length) clearInterval(id);
         }, 45);
         return () => clearInterval(id);
     }, []);
@@ -47,12 +46,12 @@ function GitBadge() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="inline-flex items-center gap-2 mb-10 font-mono text-sm"
+            className="inline-flex max-w-full flex-wrap items-center justify-center gap-2 mb-8 sm:mb-10 font-mono text-xs sm:text-sm px-2"
         >
             <span className="text-zinc-600">$</span>
             <span className="text-emerald-400">{cmd}</span>
             <span className="text-zinc-500">{rest}</span>
-            {displayed.length < full.length && (
+            {displayed.length < GIT_BADGE_TEXT.length && (
                 <motion.span
                     animate={{ opacity: [1, 1, 0, 0] }}
                     transition={{ duration: 0.8, repeat: Infinity, times: [0, 0.5, 0.5, 1] }}
@@ -123,7 +122,7 @@ function Navbar() {
                 : "bg-transparent"
                 }`}
         >
-            <div className="max-w-7xl mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 h-16 flex items-center justify-between">
                 {/* Logo */}
                 <a href="#hero" className="flex items-center gap-2 group">
                     <div className="w-7 h-7 border border-emerald-500/60 rounded flex items-center justify-center group-hover:border-emerald-400 transition-colors">
@@ -162,9 +161,9 @@ function Navbar() {
                     onClick={() => setMenuOpen(!menuOpen)}
                     aria-label="Toggle menu"
                 >
-                    <span className={`block w-5 h-px bg-white transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-[7px]" : ""}`} />
+                    <span className={`block w-5 h-px bg-white transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-1.75" : ""}`} />
                     <span className={`block w-5 h-px bg-white transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`} />
-                    <span className={`block w-5 h-px bg-white transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-[7px]" : ""}`} />
+                    <span className={`block w-5 h-px bg-white transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-1.75" : ""}`} />
                 </button>
             </div>
 
@@ -181,11 +180,18 @@ function Navbar() {
                             key={l}
                             href={`#${l.toLowerCase()}`}
                             onClick={() => setMenuOpen(false)}
-                            className="font-mono text-xs tracking-widest uppercase text-zinc-400 hover:text-emerald-400 transition-colors py-2 border-b border-white/5"
+                            className="font-mono text-sm tracking-widest uppercase text-zinc-400 hover:text-emerald-400 transition-colors py-3 border-b border-white/5"
                         >
                             {l}
                         </a>
                     ))}
+                    <a
+                        href="#contact"
+                        onClick={() => setMenuOpen(false)}
+                        className="mt-2 inline-flex items-center justify-center gap-2 px-4 py-3 border border-emerald-500/50 text-emerald-400 font-mono text-xs tracking-widest uppercase hover:bg-emerald-500/10 transition-all rounded"
+                    >
+                        Hire Me <ArrowUpRight className="w-3.5 h-3.5" />
+                    </a>
                 </motion.div>
             )}
         </motion.nav>
@@ -201,7 +207,12 @@ function Hero() {
     const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+    const reduceMotion = useReducedMotion();
     useEffect(() => {
+        if (typeof window === "undefined" || window.matchMedia("(pointer: coarse)").matches || reduceMotion) {
+            return;
+        }
+
         const handler = (e: MouseEvent) => {
             setMousePos({
                 x: (e.clientX / window.innerWidth - 0.5) * 24,
@@ -210,29 +221,29 @@ function Hero() {
         };
         window.addEventListener("mousemove", handler);
         return () => window.removeEventListener("mousemove", handler);
-    }, []);
+    }, [reduceMotion]);
 
     return (
         <section
             id="hero"
             ref={heroRef}
-            className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
+            className="relative min-h-svh sm:min-h-screen flex flex-col items-center justify-center overflow-hidden pt-24 pb-12 sm:pt-28 sm:pb-14"
         >
             {/* Animated background blobs */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
                 <motion.div
-                    className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-emerald-500/6 rounded-full blur-[120px]"
+                    className="absolute top-1/4 left-1/4 w-72 h-72 sm:w-125 sm:h-125 bg-emerald-500/6 rounded-full blur-[120px]"
                     animate={{ scale: [1, 1.15, 1], x: [0, 20, 0] }}
                     transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
                 />
                 <motion.div
-                    className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-cyan-500/5 rounded-full blur-[100px]"
+                    className="absolute bottom-1/3 right-1/4 w-64 h-64 sm:w-100 sm:h-100 bg-cyan-500/5 rounded-full blur-[100px]"
                     animate={{ scale: [1, 1.2, 1], x: [0, -20, 0] }}
                     transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
                 />
             </div>
 
-            <motion.div style={{ y, opacity }} className="relative z-10 text-center px-6 max-w-5xl mx-auto">
+            <motion.div style={{ y, opacity }} className="relative z-10 text-center px-4 sm:px-6 max-w-5xl mx-auto w-full">
                 {/* Git badge */}
                 <GitBadge />
 
@@ -243,7 +254,7 @@ function Hero() {
                     transition={{ delay: 0.35, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                     style={{ x: mousePos.x * 0.15, y: mousePos.y * 0.15 }}
                 >
-                    <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-[96px] font-bold tracking-tighter text-zinc-300 leading-none mb-4">
+                    <h1 className="text-[2.4rem] leading-[0.92] sm:text-7xl md:text-8xl lg:text-[96px] font-bold tracking-tighter text-zinc-300 sm:leading-[0.95] mb-4">
                         Abhra Jaiswal
                     </h1>
                 </motion.div>
@@ -257,7 +268,7 @@ function Hero() {
                     className="mb-8"
                 >
                     <div className="relative inline-block">
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-white/70 tracking-tight">
+                        <h2 className="text-lg sm:text-3xl md:text-4xl font-light text-white/70 tracking-tight px-2">
                             Computer Science Engineer
                         </h2>
                         <motion.div
@@ -274,7 +285,7 @@ function Hero() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.7, duration: 0.8 }}
-                    className="text-zinc-400 text-lg leading-relaxed max-w-2xl mx-auto mb-12"
+                    className="text-zinc-400 text-sm sm:text-lg leading-relaxed max-w-2xl mx-auto mb-10 sm:mb-12 px-1"
                 >
                     I design systems, not just screens. Every pixel, animation, and logic flow is
                     a deliberate engineering decision.
@@ -285,19 +296,19 @@ function Hero() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.9, duration: 0.6 }}
-                    className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20"
+                    className="flex flex-col sm:flex-row gap-2.5 sm:gap-4 justify-center items-center mb-14 sm:mb-20"
                 >
                     <a
                         href="#projects"
-                        className="group flex items-center gap-3 px-8 py-3.5 bg-emerald-500 text-black font-semibold text-sm tracking-wide hover:bg-emerald-400 transition-all rounded"
+                        className="group inline-flex items-center justify-center gap-2 sm:gap-3 w-auto px-5 sm:px-8 py-3 sm:py-3.5 bg-emerald-500 text-black font-semibold text-[13px] sm:text-sm tracking-wide hover:bg-emerald-400 transition-all rounded"
                         style={{ boxShadow: "0 0 30px rgba(16, 185, 129, 0.35)" }}
                     >
                         View My Work
-                        <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                        <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                     </a>
                     <a
                         href="#contact"
-                        className="flex items-center gap-3 px-8 py-3.5 border border-white/20 text-white/80 font-semibold text-sm tracking-wide hover:border-emerald-500/60 hover:text-emerald-400 transition-all rounded"
+                        className="inline-flex items-center justify-center gap-2 sm:gap-3 w-auto px-5 sm:px-8 py-3 sm:py-3.5 border border-white/20 text-white/80 font-semibold text-[13px] sm:text-sm tracking-wide hover:border-emerald-500/60 hover:text-emerald-400 transition-all rounded"
                     >
                         Get In Touch
                     </a>
@@ -308,7 +319,7 @@ function Hero() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1.4, duration: 0.8 }}
-                    className="flex flex-col items-center gap-2"
+                    className="hidden sm:flex flex-col items-center gap-2"
                 >
                     <span className="font-mono text-xs text-white/30 tracking-widest uppercase">scroll</span>
                     <motion.div
@@ -353,6 +364,24 @@ function Hero() {
 
 function About() {
     const [hoveredLine, setHoveredLine] = useState<number | null>(null);
+    const [isMobileDevice, setIsMobileDevice] = useState(false);
+    const reduceMotion = useReducedMotion();
+
+    useEffect(() => {
+        if (typeof window === "undefined") {
+            return;
+        }
+
+        const mediaQuery = window.matchMedia("(max-width: 767px), (pointer: coarse)");
+        const updateIsMobile = () => setIsMobileDevice(mediaQuery.matches);
+
+        updateIsMobile();
+        mediaQuery.addEventListener("change", updateIsMobile);
+
+        return () => mediaQuery.removeEventListener("change", updateIsMobile);
+    }, []);
+
+    const disableIdentityAnimation = isMobileDevice || reduceMotion;
 
     const identityStatements = [
         "I build interfaces.",
@@ -402,79 +431,90 @@ function About() {
     ];
 
     return (
-        <section id="about" className="py-28 md:py-36 px-8 md:px-16 w-full flex flex-col justify-center">
+        <section id="about" className="py-20 sm:py-24 md:py-36 px-4 sm:px-6 md:px-16 w-full flex flex-col justify-center">
             <div className="max-w-7xl mx-auto w-full">
-                <FadeUp className="mb-16">
+                <FadeUp className="mb-10 sm:mb-12 md:mb-16">
                     <SectionLabel>About</SectionLabel>
+                    <p className="max-w-2xl text-sm sm:text-base text-zinc-500 leading-relaxed">
+                        I approach product work as a balance of structure, interaction, and implementation detail.
+                    </p>
                 </FadeUp>
 
                 {/* Scene 1.2 - Identity Reveal */}
-                <div className="grid md:grid-cols-2 gap-16 mb-32">
+                <div className="grid md:grid-cols-2 gap-8 md:gap-16 mb-16 sm:mb-20 md:mb-32 items-start">
                     {/* Left: Identity statements */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true, margin: "-100px" }}
                         transition={{ duration: 0.8 }}
-                        className="space-y-8"
+                        className="space-y-6 sm:space-y-8 rounded-2xl border border-white/6 bg-zinc-900/20 p-5 sm:p-6 md:bg-transparent md:border-0 md:p-0"
                     >
                         {identityStatements.map((statement, index) => (
                             <motion.div
                                 key={index}
-                                onHoverStart={() => setHoveredLine(index)}
-                                onHoverEnd={() => setHoveredLine(null)}
+                                onHoverStart={disableIdentityAnimation ? undefined : () => setHoveredLine(index)}
+                                onHoverEnd={disableIdentityAnimation ? undefined : () => setHoveredLine(null)}
                                 className="cursor-default overflow-hidden relative"
                             >
                                 <motion.h2
-                                    animate={{
+                                    animate={disableIdentityAnimation ? undefined : {
                                         x: hoveredLine === index ? 6 : 0
                                     }}
-                                    transition={{ duration: 0.2 }}
-                                    className="text-4xl md:text-6xl font-light text-white/90 tracking-tight relative"
+                                    transition={disableIdentityAnimation ? undefined : { duration: 0.2 }}
+                                    className="text-2xl sm:text-4xl md:text-6xl font-light text-white/90 tracking-tight relative leading-tight"
                                 >
-                                    {statement.split('').map((char, charIndex) => (
-                                        <motion.span
-                                            key={charIndex}
-                                            initial={{
-                                                opacity: 0,
-                                                y: 20,
-                                                filter: "blur(10px)"
-                                            }}
-                                            whileInView={{
-                                                opacity: 1,
-                                                y: 0,
-                                                filter: "blur(0px)"
-                                            }}
-                                            viewport={{ once: true, margin: "-100px" }}
-                                            transition={{
-                                                delay: index * 0.5 + charIndex * 0.03,
-                                                duration: 0.4,
-                                                ease: [0.16, 1, 0.3, 1]
-                                            }}
-                                            className="inline-block"
-                                            style={{ whiteSpace: char === ' ' ? 'pre' : 'normal' }}
-                                        >
-                                            {char}
-                                        </motion.span>
-                                    ))}
+                                    {disableIdentityAnimation ? (
+                                        <span className="block border-l-2 border-emerald-500/40 pl-4 sm:pl-5">
+                                            {statement}
+                                        </span>
+                                    ) : (
+                                        statement.split('').map((char, charIndex) => (
+                                            <motion.span
+                                                key={charIndex}
+                                                initial={{
+                                                    opacity: 0,
+                                                    y: 20,
+                                                    filter: "blur(10px)"
+                                                }}
+                                                whileInView={{
+                                                    opacity: 1,
+                                                    y: 0,
+                                                    filter: "blur(0px)"
+                                                }}
+                                                viewport={{ once: true, margin: "-100px" }}
+                                                transition={{
+                                                    delay: index * 0.5 + charIndex * 0.03,
+                                                    duration: 0.4,
+                                                    ease: [0.16, 1, 0.3, 1]
+                                                }}
+                                                className="inline-block"
+                                                style={{ whiteSpace: char === ' ' ? 'pre' : 'normal' }}
+                                            >
+                                                {char}
+                                            </motion.span>
+                                        ))
+                                    )}
                                 </motion.h2>
 
                                 {/* Animated underline */}
-                                <motion.div
-                                    initial={{ scaleX: 0, opacity: 0 }}
-                                    animate={{
-                                        scaleX: hoveredLine === index ? 1 : 0,
-                                        opacity: hoveredLine === index ? 1 : 0
-                                    }}
-                                    transition={{
-                                        duration: 0.4,
-                                        ease: [0.16, 1, 0.3, 1]
-                                    }}
-                                    className="h-0.5 bg-white mt-2 origin-left w-3/4"
-                                    style={{
-                                        boxShadow: "0 0 10px rgba(255, 255, 255, 0.5)"
-                                    }}
-                                />
+                                {!disableIdentityAnimation && (
+                                    <motion.div
+                                        initial={{ scaleX: 0, opacity: 0 }}
+                                        animate={{
+                                            scaleX: hoveredLine === index ? 1 : 0,
+                                            opacity: hoveredLine === index ? 1 : 0
+                                        }}
+                                        transition={{
+                                            duration: 0.4,
+                                            ease: [0.16, 1, 0.3, 1]
+                                        }}
+                                        className="h-0.5 bg-white mt-2 origin-left w-3/4"
+                                        style={{
+                                            boxShadow: "0 0 10px rgba(255, 255, 255, 0.5)"
+                                        }}
+                                    />
+                                )}
                             </motion.div>
                         ))}
 
@@ -483,9 +523,9 @@ function About() {
                             whileInView={{ opacity: 1 }}
                             viewport={{ once: true, margin: "-100px" }}
                             transition={{ delay: 1.2, duration: 0.6 }}
-                            className="pt-8"
+                            className="pt-2 sm:pt-4"
                         >
-                            <p className="text-zinc-500 text-lg leading-relaxed">
+                            <p className="text-zinc-500 text-sm sm:text-lg leading-relaxed max-w-xl">
                                 {PORTFOLIO_DATA.profile.bio}
                             </p>
                         </motion.div>
@@ -610,8 +650,8 @@ function About() {
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true, margin: "-100px" }}
-                    transition={{ delay: 1, duration: 0.8 }}
-                    className="grid md:grid-cols-3 gap-8 mt-12 md:mt-16"
+                    transition={{ delay: 0.8, duration: 0.55 }}
+                    className="grid md:grid-cols-3 gap-4 sm:gap-5 md:gap-8 mt-8 sm:mt-10 md:mt-16"
                 >
                     {philosophyCards.map((card, index) => (
                         <motion.div
@@ -626,29 +666,29 @@ function About() {
                             }}
                             viewport={{ once: true, margin: "-50px" }}
                             transition={{
-                                delay: 1.2 + (index * 0.2),
-                                duration: 0.7,
+                                delay: 0.65 + (index * 0.12),
+                                duration: 0.5,
                                 ease: [0.16, 1, 0.3, 1]
                             }}
                             whileHover={{
                                 y: -4,
-                                transition: { duration: 0.2 }
+                                transition: { duration: 0.18 }
                             }}
-                            className="p-8 bg-zinc-900/30 backdrop-blur border border-emerald-500/20 rounded-lg group hover:border-emerald-400/50 transition-colors shadow-[0_0_20px_rgba(16,185,129,0.05)]"
+                            className="p-5 sm:p-8 bg-zinc-900/30 backdrop-blur border border-emerald-500/16 rounded-lg group hover:border-emerald-400/28 transition-colors shadow-[0_0_14px_rgba(16,185,129,0.03)]"
                         >
                             <motion.div
                                 animate={{
                                     boxShadow: "0 0 0 0 rgba(16, 185, 129, 0)"
                                 }}
                                 whileHover={{
-                                    boxShadow: "0 10px 30px -10px rgba(16, 185, 129, 0.3)"
+                                    boxShadow: "0 10px 24px -18px rgba(16, 185, 129, 0.18)"
                                 }}
-                                transition={{ duration: 0.3 }}
+                                transition={{ duration: 0.2 }}
                                 className="rounded-lg space-y-4"
                             >
                                 <div className="flex items-center gap-3 mb-2">
                                     <card.icon className="w-6 h-6 text-emerald-400" />
-                                    <h3 className="text-2xl font-semibold text-white">
+                                    <h3 className="text-xl sm:text-2xl font-semibold text-white">
                                         {card.title}
                                     </h3>
                                 </div>
@@ -659,7 +699,7 @@ function About() {
                                     {card.description}
                                 </p>
 
-                                <ul className="space-y-2 mt-4">
+                                <ul className="space-y-1.5 sm:space-y-2 mt-4">
                                     {card.points.map((point, i) => (
                                         <li key={i} className="text-zinc-400 text-sm flex items-start gap-2">
                                             <span className="text-emerald-500 mt-1">•</span>
@@ -711,18 +751,18 @@ function Skills() {
     };
 
     return (
-        <section id="skills" className="py-28 md:py-36 px-6 md:px-12">
+        <section id="skills" className="py-24 md:py-36 px-4 sm:px-6 md:px-12">
             <div className="max-w-6xl mx-auto">
-                <FadeUp className="mb-16">
+                <FadeUp className="mb-12 md:mb-16">
                     <SectionLabel>Skills</SectionLabel>
-                    <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tighter">
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tighter">
                         Capabilities earned,
                         {/* <br /> */}
                         <span className="text-zinc-500"> &nbsp;not claimed.</span>
                     </h2>
                 </FadeUp>
 
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
                     {categories.map((module, ci) => {
                         const Icon = module.icon;
                         const style = cardStyleMap[module.color];
@@ -732,7 +772,7 @@ function Skills() {
                                 <motion.div
                                     whileHover={{ y: -4 }}
                                     transition={{ duration: 0.2 }}
-                                    className={`relative bg-zinc-900/30 backdrop-blur border border-zinc-800 rounded-lg p-6 cursor-default ${style.hoverBorder} transition-colors overflow-hidden group`}
+                                    className={`relative bg-zinc-900/30 backdrop-blur border border-zinc-800 rounded-lg p-5 sm:p-6 cursor-default ${style.hoverBorder} transition-colors overflow-hidden group`}
                                     style={{
                                         boxShadow: "0 0 20px rgba(255, 255, 255, 0.03)"
                                     }}
@@ -848,12 +888,12 @@ const accentGlow: Record<string, string> = {
 
 function Projects() {
     return (
-        <section id="projects" className="py-28 md:py-36 px-6 md:px-12">
+        <section id="projects" className="py-24 md:py-36 px-4 sm:px-6 md:px-12">
             <div className="max-w-7xl mx-auto">
                 <FadeUp className="mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
                     <div>
                         <SectionLabel>Projects</SectionLabel>
-                        <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tighter">
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tighter">
                             Things I&apos;ve shipped.
                         </h2>
                     </div>
@@ -867,13 +907,13 @@ function Projects() {
                     </a>
                 </FadeUp>
 
-                <div className="grid md:grid-cols-3 gap-6">
+                <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
                     {PROJECTS.map((p, i) => (
                         <FadeUp key={p.id} delay={i * 0.1}>
                             <motion.div
                                 whileHover={{ y: -6 }}
                                 transition={{ duration: 0.25 }}
-                                className={`group relative h-full flex flex-col p-7 bg-zinc-900/30 border border-white/8 rounded-xl transition-all duration-300 overflow-hidden ${accentBorder[p.accent]}`}
+                                className={`group relative h-full flex flex-col p-5 sm:p-7 bg-zinc-900/30 border border-white/8 rounded-xl transition-all duration-300 overflow-hidden ${accentBorder[p.accent]}`}
                                 style={{ boxShadow: `0 0 0 0 ${accentGlow[p.accent]}` }}
                                 whileInView={{ boxShadow: `0 20px 60px -20px ${accentGlow[p.accent]}` }}
                                 viewport={{ once: true }}
@@ -944,20 +984,20 @@ function Contact() {
     };
 
     return (
-        <section id="contact" className="py-28 md:py-36 px-6 md:px-12">
+        <section id="contact" className="py-24 md:py-36 px-4 sm:px-6 md:px-12">
             <div className="max-w-5xl mx-auto">
                 <FadeUp className="mb-16 text-center">
                     <SectionLabel rightLine>Contact</SectionLabel>
-                    <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tighter mb-4">
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tighter mb-4">
                         Let&apos;s build something.
                     </h2>
-                    <p className="text-zinc-400 text-lg max-w-xl mx-auto">
+                    <p className="text-zinc-400 text-sm sm:text-lg max-w-xl mx-auto">
                         Got an idea? Need a developer who thinks in systems and ships fast?
                         I&apos;m open to interesting projects and collaborations.
                     </p>
                 </FadeUp>
 
-                <div className="grid md:grid-cols-2 gap-12 items-start">
+                <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-start">
                     {/* Info */}
                     <FadeUp delay={0.1} className="space-y-6">
                         {[
@@ -981,7 +1021,7 @@ function Contact() {
                             </div>
                         ))}
 
-                        <div className="flex gap-3 pt-2">
+                        <div className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:gap-3 pt-2">
                             {[
                                 { href: PORTFOLIO_DATA.profile.github, icon: Github, label: "GitHub" },
                                 { href: PORTFOLIO_DATA.profile.linkedin, icon: Linkedin, label: "LinkedIn" },
@@ -992,7 +1032,7 @@ function Contact() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     aria-label={label}
-                                    className="flex items-center gap-2 px-4 py-2.5 bg-zinc-900/40 border border-white/8 rounded-lg text-zinc-400 hover:text-emerald-400 hover:border-emerald-500/30 transition-all text-sm font-mono"
+                                    className="flex w-full items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-2.5 bg-zinc-900/40 border border-white/8 rounded-lg text-zinc-400 hover:text-emerald-400 hover:border-emerald-500/30 transition-all text-[11px] sm:text-sm font-mono"
                                 >
                                     <Icon className="w-4 h-4" />
                                     {label}
@@ -1003,7 +1043,7 @@ function Contact() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label="Instagram"
-                                className="flex items-center gap-2 px-4 py-2.5 bg-zinc-900/40 border border-white/8 rounded-lg text-zinc-400 hover:text-emerald-400 hover:border-emerald-500/30 transition-all text-sm font-mono"
+                                className="flex w-full items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-2.5 bg-zinc-900/40 border border-white/8 rounded-lg text-zinc-400 hover:text-emerald-400 hover:border-emerald-500/30 transition-all text-[11px] sm:text-sm font-mono"
                             >
                                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                                 Instagram
@@ -1014,13 +1054,13 @@ function Contact() {
                     {/* Note card */}
                     <FadeUp delay={0.15}>
                         <div
-                            className="relative bg-zinc-900/30 border border-white/8 rounded-xl p-7 overflow-hidden"
+                            className="relative bg-zinc-900/30 border border-white/8 rounded-xl p-5 sm:p-7 overflow-hidden"
                             style={{ boxShadow: "0 0 40px rgba(16,185,129,0.05)" }}
                         >
                             {/* Subtle top glow line */}
                             <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-emerald-500/40 to-transparent" />
 
-                            <p className="text-zinc-300 text-lg leading-relaxed mb-7">
+                            <p className="text-zinc-300 text-base sm:text-lg leading-relaxed mb-7">
                                 Currently accepting new challenges in{" "}
                                 <span className="font-semibold text-white">Full Stack Development</span>,{" "}
                                 <span className="font-semibold text-white">UI Engineering</span>, and{" "}
@@ -1028,10 +1068,10 @@ function Contact() {
                             </p>
 
                             {/* Email row */}
-                            <div className="flex items-center justify-between gap-3 px-4 py-3.5 bg-black/30 border border-white/8 rounded-lg mb-4 font-mono">
+                            <div className="flex items-center justify-between gap-3 px-3 sm:px-4 py-3.5 bg-black/30 border border-white/8 rounded-lg mb-4 font-mono">
                                 <div className="flex items-center gap-3 min-w-0">
                                     <Mail className="w-4 h-4 text-emerald-400/70 shrink-0" />
-                                    <span className="text-zinc-400 text-sm truncate">{email}</span>
+                                    <span className="text-zinc-400 text-xs sm:text-sm truncate">{email}</span>
                                 </div>
                                 <button
                                     onClick={handleCopy}

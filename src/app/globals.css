@@ -59,6 +59,17 @@ body {
   background-attachment: fixed;
 }
 
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll;
+    background-size:
+      100% 100%,
+      24px 24px,
+      48px 48px,
+      48px 48px;
+  }
+}
+
 /* Overlay grid for sections/containers */
 .grid-surface {
   position: relative;
