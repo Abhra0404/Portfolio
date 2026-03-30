@@ -926,6 +926,7 @@ const PROJECTS = [
             "Designed responsive layouts with mobile-first interaction tuning.",
             "Maintained performance-first implementation across visual-heavy UI.",
         ],
+        link: "https://abhra-portfolio.vercel.app/",
         github: "https://github.com/Abhra0404/portfolio",
         accent: "cyan",
     },
@@ -1087,9 +1088,28 @@ function Projects() {
                             </p>
 
                             <div className="mb-6">
-                                <p className="font-mono text-[11px] uppercase tracking-widest text-zinc-500 mb-3">Project Image</p>
-                                <div className="aspect-video w-full rounded-xl border border-white/10 bg-zinc-900/75 overflow-hidden">
-                                    {selectedProject.image ? (
+                                <p className="font-mono text-[11px] uppercase tracking-widest text-zinc-500 mb-3">
+                                    {selectedProject.link ? "Live Preview" : "Project Image"}
+                                </p>
+                                <div className={`w-full rounded-xl border border-white/10 bg-zinc-900/75 overflow-hidden ${selectedProject.link ? "relative h-[70vh]" : "aspect-video"}`}>
+                                    {selectedProject.link ? (
+                                        <iframe
+                                            src={selectedProject.link}
+                                            title={`${selectedProject.title} live preview`}
+                                            className="absolute top-0 left-0 border-0 origin-top-left"
+                                            style={{ width: "1440px", height: "900px", transform: "scale(var(--iframe-scale))" }}
+                                            sandbox="allow-scripts allow-same-origin"
+                                            loading="lazy"
+                                            ref={(el) => {
+                                                if (!el) return;
+                                                const parent = el.parentElement;
+                                                if (!parent) return;
+                                                const scale = parent.clientWidth / 1440;
+                                                el.style.setProperty("--iframe-scale", String(scale));
+                                                parent.style.height = `${900 * scale}px`;
+                                            }}
+                                        />
+                                    ) : selectedProject.image ? (
                                         <Image
                                             src={selectedProject.image}
                                             alt={`${selectedProject.title} preview`}

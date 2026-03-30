@@ -11,26 +11,6 @@ export const PORTFOLIO_DATA = {
         linkedin: "https://linkedin.com/in/abhra0404",
         instagram: "https://www.instagram.com/_abhra__18/"
     },
-    experience: [
-        {
-            company: "Tech Corp",
-            role: "Senior Frontend Engineer",
-            period: "2023 - PRESENT",
-            description: "Leading the frontend architecture for the core product. Migrated legacy SPA to Next.js App Router, improving LCP by 40%."
-        },
-        {
-            company: "Startup Inc",
-            role: "Full Stack Developer",
-            period: "2021 - 2023",
-            description: "Built and scaled the MVP to 10k users. Implemented real-time collaboration features using WebSockets and Redis."
-        },
-        {
-            company: "Freelance",
-            role: "Web Developer",
-            period: "2020 - 2021",
-            description: "Delivered high-performance websites for various clients. Specialized in animation-heavy interactions and headless CMS integrations."
-        }
-    ],
     skills: {
         frontend: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Three.js", "GSAP"],
         backend: ["Node.js", "ExpressJS", "MongoDB","Supabase","PostgreSQL", "Serverless", "System Design"],

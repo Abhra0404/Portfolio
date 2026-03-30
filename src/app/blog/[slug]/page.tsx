@@ -1,4 +1,4 @@
-import { ArrowLeft, CalendarDays, Clock3 } from "lucide-react";
+import { ArrowLeft, CalendarDays } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -10,6 +10,13 @@ const POSTS: Record<string, { title: string; date: string; readTime: string; sum
     readTime: "8 min read",
     summary:
       "Ever wondered what happens when you tap 'Book Ride'? Explore the distributed architecture powering modern ride-hailing platforms like Uber and Rapido.",
+  },
+  "rag-system-design": {
+    title: "RAG: A System Design Perspective (Not a Buzzword)",
+    date: "Mar 30, 2026",
+    readTime: "10 min read",
+    summary:
+      "Stop treating RAG as a prompt engineering trick. From a system design standpoint, it's a distributed data pipeline problem wrapped in an LLM interface.",
   },
 };
 
@@ -179,6 +186,138 @@ export default async function BlogArticlePage({
 
               <p className="text-sm text-zinc-500 italic pt-6 border-t border-zinc-800">
                 The beauty of ride-booking systems lies in their elegant balance between consistency and performance, between user experience and infrastructure constraints.
+              </p>
+            </div>
+          )}
+
+          {slug === "rag-system-design" && (
+            <div className="mt-10 space-y-8 text-zinc-300 leading-relaxed">
+              <section>
+                <p className="text-base mb-4">
+                  Stop treating Retrieval-Augmented Generation (RAG) as a prompt engineering trick. From a system design standpoint, RAG is a <strong className="text-emerald-300">distributed data pipeline problem</strong> wrapped in an LLM interface. It is an architectural pattern designed to solve three specific engineering constraints: <strong className="text-emerald-300">context window limits</strong>, <strong className="text-emerald-300">data freshness</strong>, and <strong className="text-emerald-300">hallucination reduction</strong> by grounding generation in external truth.
+                </p>
+                <p className="text-base">
+                  If you are designing a RAG system, you are not just building a chatbot; you are building a search engine with a generative frontend.
+                </p>
+              </section>
+
+              <section>
+                <div className="rounded-lg overflow-hidden border border-white/10 mb-8">
+                  <Image
+                    src="/blog2.png"
+                    alt="RAG System Architecture Diagram"
+                    width={1200}
+                    height={800}
+                    className="w-full h-auto"
+                  />
+                </div>
+              </section>
+
+              <section>
+                <h2 className="text-2xl font-semibold text-zinc-100 mb-4">The High-Level Architecture</h2>
+                <p className="mb-4">
+                  A production-grade RAG system consists of two distinct, decoupled pipelines: the <strong className="text-emerald-300">Ingestion Pipeline</strong> (write-heavy, async) and the <strong className="text-emerald-300">Query Pipeline</strong> (read-heavy, low-latency).
+                </p>
+                <div className="bg-zinc-900/50 border border-white/10 rounded-lg p-4 mb-6 font-mono text-sm overflow-x-auto text-zinc-300">
+                  <pre>{`[Data Sources] → [ETL/Chunking] → [Embedding Model] → [Vector DB]
+                                            ↑
+[User Query] → [Query Embedding] → [Retrieval] → [LLM Context] → [Response]`}</pre>
+                </div>
+              </section>
+
+              <section>
+                <h2 className="text-2xl font-semibold text-zinc-100 mb-4">1. The Ingestion Pipeline (The Hard Part)</h2>
+                <p className="mb-4">
+                  Most engineers focus on the query path, but the system&apos;s reliability depends on the ingestion pipeline. This is an asynchronous ETL process.
+                </p>
+                <ul className="list-disc pl-6 space-y-3">
+                  <li>
+                    <strong className="text-zinc-100">Chunking Strategy:</strong> This is effectively <strong className="text-emerald-300">data sharding</strong>. You must decide on chunk size (tokens) and overlap. Too small, and you lose semantic context; too large, and you waste context window tokens on irrelevant noise.
+                  </li>
+                  <li>
+                    <strong className="text-zinc-100">Embedding Generation:</strong> This is a compute-intensive batch job. You cannot embed documents on the fly during the query path without incurring massive latency. These must be pre-computed and stored.
+                  </li>
+                  <li>
+                    <strong className="text-zinc-100">Data Consistency:</strong> What happens when a source document updates? You need a CDC (Change Data Capture) mechanism to invalidate old vector embeddings and re-index the new chunks. Without this, your system serves stale &quot;truth.&quot;
+                  </li>
+                </ul>
+              </section>
+
+              <section>
+                <h2 className="text-2xl font-semibold text-zinc-100 mb-4">2. The Query Pipeline (Latency Optimization)</h2>
+                <p className="mb-4">
+                  The user-facing path has a strict latency budget (usually &lt;2 seconds).
+                </p>
+                <ul className="list-disc pl-6 space-y-3">
+                  <li>
+                    <strong className="text-zinc-100">Hybrid Search:</strong> Relying solely on vector similarity (k-NN) often fails on exact keyword matches (e.g., product IDs). A robust system combines <strong className="text-emerald-300">Dense Retrieval</strong> (vectors) with <strong className="text-emerald-300">Sparse Retrieval</strong> (BM25/keyword) and merges results.
+                  </li>
+                  <li>
+                    <strong className="text-zinc-100">Re-Ranking:</strong> Initial retrieval fetches top-k (e.g., 20) documents. A cross-encoder re-ranker then scores these 20 for relevance before passing the top-5 to the LLM. This adds latency but drastically improves precision.
+                  </li>
+                  <li>
+                    <strong className="text-zinc-100">Context Window Management:</strong> You are paying for every token sent to the LLM. The retrieval layer must filter aggressively to minimize cost and latency.
+                  </li>
+                </ul>
+              </section>
+
+              <section>
+                <h2 className="text-2xl font-semibold text-zinc-100 mb-4">Key Design Trade-offs</h2>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm border-collapse">
+                    <thead>
+                      <tr className="border-b border-zinc-700">
+                        <th className="text-left py-3 px-3 text-emerald-300 font-semibold">Component</th>
+                        <th className="text-left py-3 px-3 text-emerald-300 font-semibold">Decision</th>
+                        <th className="text-left py-3 px-3 text-emerald-300 font-semibold">Trade-off</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-zinc-800">
+                        <td className="py-3 px-3 font-semibold text-zinc-100">Vector DB</td>
+                        <td className="py-3 px-3">Managed (Pinecone) vs. Self-hosted (Milvus/pgvector)</td>
+                        <td className="py-3 px-3"><strong className="text-emerald-300">Ops Overhead vs. Cost/Control.</strong> Managed scales easier; self-hosted offers data sovereignty.</td>
+                      </tr>
+                      <tr className="border-b border-zinc-800">
+                        <td className="py-3 px-3 font-semibold text-zinc-100">Chunk Size</td>
+                        <td className="py-3 px-3">Small (256 tokens) vs. Large (1024 tokens)</td>
+                        <td className="py-3 px-3"><strong className="text-emerald-300">Precision vs. Context.</strong> Small chunks retrieve precise facts; large chunks provide better narrative flow.</td>
+                      </tr>
+                      <tr>
+                        <td className="py-3 px-3 font-semibold text-zinc-100">Retrieval</td>
+                        <td className="py-3 px-3">Top-K Fixed vs. Dynamic Threshold</td>
+                        <td className="py-3 px-3"><strong className="text-emerald-300">Recall vs. Noise.</strong> Fixed K is simpler; dynamic threshold prevents feeding irrelevant docs to the LLM when no good match exists.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              <section>
+                <h2 className="text-2xl font-semibold text-zinc-100 mb-4">Failure Modes & Monitoring</h2>
+                <p className="mb-4">A System Designer must plan for failure. RAG systems fail silently.</p>
+                <ol className="list-decimal pl-6 space-y-3">
+                  <li>
+                    <strong className="text-zinc-100">Retrieval Failure:</strong> The relevant doc exists but wasn&apos;t retrieved. <em className="text-zinc-400">Mitigation:</em> Monitor &quot;Recall@K&quot; metrics using a golden dataset.
+                  </li>
+                  <li>
+                    <strong className="text-zinc-100">Generation Failure:</strong> The LLM ignores the context. <em className="text-zinc-400">Mitigation:</em> Use prompt constraints and evaluate output faithfulness.
+                  </li>
+                  <li>
+                    <strong className="text-zinc-100">Latency Spikes:</strong> Embedding APIs or Vector DBs can throttle. <em className="text-zinc-400">Mitigation:</em> Implement caching for frequent queries and circuit breakers for external embedding calls.
+                  </li>
+                </ol>
+              </section>
+
+              <section>
+                <h2 className="text-2xl font-semibold text-zinc-100 mb-4">Conclusion</h2>
+                <p>
+                  RAG is not magic; it is <strong className="text-emerald-300">Search + Summarization</strong>. By treating it as a data engineering challenge—focusing on indexing strategies, consistency models, and latency budgets—you move beyond the hype and build systems that are reliable, scalable, and maintainable.
+                </p>
+              </section>
+
+              <p className="text-sm text-zinc-500 italic pt-6 border-t border-zinc-800">
+                The key insight is treating RAG as a distributed systems problem, not an AI prompt trick—engineering rigor over hype.
               </p>
             </div>
           )}
