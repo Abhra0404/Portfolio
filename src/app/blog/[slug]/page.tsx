@@ -74,7 +74,7 @@ export default async function BlogArticlePage({
               <section>
                 <div className="rounded-lg overflow-hidden border border-white/10 mb-8">
                   <Image
-                    src="/blog.jpeg"
+                    src="/blog1.jpeg"
                     alt="Ride Booking System Architecture Diagram"
                     width={1200}
                     height={800}

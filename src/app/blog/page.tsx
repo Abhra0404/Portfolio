@@ -12,7 +12,7 @@ const BLOG_POSTS = [
     publishedAt: "2026-03-19",
     views: 0,
     tag: "System Design",
-    image: "/blog.jpeg",
+    image: "/blog1.jpeg",
   },
   {
     slug: "rag-system-design",
