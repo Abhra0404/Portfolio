@@ -4,6 +4,8 @@
   /* Dark-first UI default variables */
   --background: #000000; /* Pure black */
   --foreground: #ffffff; /* Pure white for better contrast */
+  --font-sans: "Inter", "Segoe UI", Arial, sans-serif;
+  --font-mono: "SFMono-Regular", "SF Mono", Consolas, "Liberation Mono", monospace;
   
   --muted: rgba(255, 255, 255, 0.08);
   --muted-foreground: #e5e5e5; /* Much lighter */

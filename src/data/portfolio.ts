@@ -9,11 +9,12 @@ export const PORTFOLIO_DATA = {
         email: "aforabhra@gmail.com",
         github: "https://github.com/Abhra0404",
         linkedin: "https://linkedin.com/in/abhra0404",
-        instagram: "https://www.instagram.com/_abhra__18/"
+        x: "https://x.com/Abhra0404"
     },
     skills: {
-        frontend: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Three.js", "GSAP"],
-        backend: ["Node.js", "ExpressJS", "MongoDB","Supabase","PostgreSQL", "Serverless", "System Design"],
-        tools: ["Git","GitHub", "Docker", "Kubernetes", "Figma", "AWS", "Vercel","UI/UX"]
+        webDevelopment: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Node.js", "ExpressJS", "MongoDB", "PostgreSQL", "Supabase"],
+        devops: ["AWS", "Linux", "Docker", "Kubernetes", "CI/CD", "Github Actions", "Prometheus", "Grafana"],
+        aiMl: ["Data Analytics", "Machine Learning", "Deep Learning", "TensorFlow", "GenAI", "LLMs", "LangChain", "LangGraph", "Agentic AI"],
+        others: ["DSA", "Git", "GitHub", "OOPs", "DBMS","Deployment", "System Design"]
     }
 };
