@@ -471,42 +471,6 @@ const SKILLS_DATA: Record<SkillCategory, string[]> = {
     core: PORTFOLIO_DATA.skills.others,
 };
 
-const SKILL_MARKS: Record<string, string> = {
-    React: "R",
-    "Next.js": "N",
-    TypeScript: "TS",
-    "Tailwind CSS": "TW",
-    "Node.js": "N",
-    ExpressJS: "EX",
-    MongoDB: "M",
-    PostgreSQL: "PG",
-    Supabase: "SB",
-    AWS: "AWS",
-    Linux: "LX",
-    Docker: "DK",
-    Kubernetes: "K8S",
-    "CI/CD": "CI",
-    "Github Actions": "GA",
-    Prometheus: "PM",
-    Grafana: "GF",
-    "Data Analytics": "DA",
-    "Machine Learning": "ML",
-    "Deep Learning": "DL",
-    TensorFlow: "TF",
-    GenAI: "GAI",
-    LLMs: "LLM",
-    LangChain: "LC",
-    LangGraph: "LG",
-    "Agentic AI": "AI",
-    DSA: "DS",
-    Git: "G",
-    GitHub: "GH",
-    OOPs: "OO",
-    DBMS: "DB",
-    Deployment: "DEP",
-    "System Design": "SD",
-};
-
 function Skills() {
     return (
         <section id="skills" className="skills-wall py-24 md:py-36 px-4 sm:px-6 md:px-12 max-w-6xl mx-auto">
@@ -520,28 +484,40 @@ function Skills() {
                 </p>
             </FadeUp>
 
-            <div className="skills-wall-grid">
-                {SKILL_CATEGORIES.map((category, categoryIndex) => (
-                    <FadeUp key={category.id} delay={categoryIndex * 0.08} className="skills-cluster">
-                        <div className="skills-cluster-heading">
-                            <span className="skills-cluster-index">0{categoryIndex + 1}</span>
-                            <div>
-                                <span className="skills-cluster-short">{category.short}</span>
-                                <h3>{category.label}</h3>
-                            </div>
-                            <span className="skills-cluster-count">{SKILLS_DATA[category.id].length} tools</span>
-                        </div>
-                        <div className="skills-logo-grid">
-                            {SKILLS_DATA[category.id].map((skill) => (
-                                <div className="skill-logo-item" key={skill} tabIndex={0}>
-                                    <span className="skill-logo-mark" aria-hidden="true">{SKILL_MARKS[skill]}</span>
-                                    <span className="skill-logo-name">{skill}</span>
-                                    <span className="skill-logo-arrow" aria-hidden="true">&nearr;</span>
+            <div className="skills-showcase">
+                <FadeUp className="skills-artwork" delay={0.05}>
+                    <Image
+                        src="/claude-no-bg.png"
+                        alt="Pixel-art illustration of Claude writing code"
+                        width={668}
+                        height={668}
+                        className="skills-artwork-image"
+                    />
+                    <span className="skills-artwork-label">TOOLS / IN MOTION</span>
+                </FadeUp>
+
+                <div className="skills-wall-grid">
+                    {SKILL_CATEGORIES.map((category, categoryIndex) => (
+                        <FadeUp key={category.id} delay={categoryIndex * 0.08} className="skills-cluster">
+                            <div className="skills-cluster-heading">
+                                <span className="skills-cluster-index">0{categoryIndex + 1}</span>
+                                <div>
+                                    <span className="skills-cluster-short">{category.short}</span>
+                                    <h3>{category.label}</h3>
                                 </div>
-                            ))}
-                        </div>
-                    </FadeUp>
-                ))}
+                                <span className="skills-cluster-count">{SKILLS_DATA[category.id].length} tools</span>
+                            </div>
+                            <div className="skills-list">
+                                {SKILLS_DATA[category.id].map((skill) => (
+                                    <div className="skill-item" key={skill} tabIndex={0}>
+                                        <span className="skill-item-index" aria-hidden="true">{String(SKILLS_DATA[category.id].indexOf(skill) + 1).padStart(2, "0")}</span>
+                                        <span className="skill-item-name">{skill}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </FadeUp>
+                    ))}
+                </div>
             </div>
         </section>
     );
@@ -877,7 +853,7 @@ const BLOG_POSTS = [
 ];
 
 function BlogSection() {
-    const mediumProfile = "https://medium.com/@abhra0404";
+    const mediumProfile = "https://medium.com/@aforabhra";
 
     return (
         <section id="blog" className="blog-section py-24 md:py-36 px-4 sm:px-6 md:px-12 max-w-6xl mx-auto">
@@ -1020,11 +996,17 @@ export default function LandingPage() {
             <Navbar />
             <main>
                 <Hero />
+                <div className="section-divider" aria-hidden="true" />
                 <About />
+                <div className="section-divider" aria-hidden="true" />
                 <Skills />
+                <div className="section-divider" aria-hidden="true" />
                 <Projects />
+                <div className="section-divider" aria-hidden="true" />
                 <BlogSection />
+                <div className="section-divider" aria-hidden="true" />
                 <Contact />
+                <div className="section-divider" aria-hidden="true" />
             </main>
             <Footer />
         </div>
