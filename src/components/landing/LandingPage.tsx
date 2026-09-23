@@ -18,7 +18,6 @@ import {
     LockOpen,
     Copy,
     Check,
-    X,
 } from "lucide-react";
 import { Pen } from "lucide-react";
 import { PORTFOLIO_DATA } from "@/data/portfolio";
@@ -862,114 +861,135 @@ const PROJECTS = [
     {
         id: "p1",
         num: "01",
-        title: "CryptoX",
-        subtitle: "Cryptocurrency Web Platform",
-        desc: "A modern cryptocurrency web platform built to present blockchain projects, tokenomics, and ecosystem information through an interactive, responsive interface.",
-        role: "Frontend Development + UI/UX Engineering",
-        timeline: "2025",
-        status: "Production",
-        impact: "Communicates token distribution, governance, staking, and ecosystem growth through a clear DeFi-focused product experience.",
-        image: "/cryptox.png",
-        stack: ["React", "JavaScript", "Tailwind CSS", "Vercel"],
+        badge: "Backend & Systems",
+        title: "High-Traffic Ticket Reservation System",
+        subtitle: "Concurrency-Safe Booking Engine",
+        desc: "A production-oriented reservation backend built to handle high concurrency and sudden spikes while maintaining strict inventory consistency.",
+        image: "",
+        stack: ["Node.js", "Express", "PostgreSQL", "Redis", "BullMQ", "Drizzle ORM", "Docker", "Prometheus"],
         highlights: [
-            "Built a tokenomics dashboard to visualize token allocation, distribution strategy, and ecosystem funding.",
-            "Designed a roadmap experience covering launch phases, ecosystem expansion, and strategic partnerships.",
-            "Presented core crypto utilities including staking, governance voting, community incentives, and innovation rewards.",
-            "Delivered a fully responsive interface optimized for desktop and mobile, deployed globally on Vercel.",
+            "Prevents double-booking under extreme contention via PostgreSQL row-level locks and transactional isolation.",
+            "Redis seat availability caching with cache-stampede protection, improving p95 latency by ~36%.",
+            "Implemented the Transactional Outbox pattern with BullMQ delayed queues for automated 10-minute hold expiration.",
+            "Engineered with Prometheus observability, structured request tracing, and validated under 1,000+ VU k6 load tests.",
         ],
-        link: "https://crypto-x-virid.vercel.app/",
-        github: "https://github.com/Abhra0404/CryptoX",
+        link: "",
+        github: "https://github.com/Abhra0404/High-Traffic-Ticket-Reservation-System",
         accent: "emerald",
     },
     {
         id: "p2",
         num: "02",
-        title: "Kaizen",
-        subtitle: "Continuous Improvement Platform",
-        desc: "A modern web application inspired by the Japanese philosophy of continuous improvement, designed to help users organize goals, track progress, and stay consistent in personal development.",
-        role: "Frontend Development + Product Interface Design",
-        timeline: "2025",
-        status: "Production",
-        impact: "Transforms personal growth workflows into a clean, responsive, and highly interactive productivity experience.",
-        image: "/kaizen.png",
-        stack: ["React", "TypeScript", "Tailwind CSS", "Supabase"],
+        badge: "Distributed Compute",
+        title: "Distributed Job Processing Platform",
+        subtitle: "Asynchronous Workload Infrastructure",
+        desc: "A distributed job orchestration platform for submitting, scheduling, executing, and monitoring computational tasks across independent worker pools.",
+        image: "",
+        stack: ["Node.js", "TypeScript", "Express", "PostgreSQL", "Redis", "BullMQ", "Drizzle ORM", "Docker"],
         highlights: [
-            "Built a goal tracking interface for defining and monitoring personal improvement targets.",
-            "Designed a minimalist dashboard that reduces distractions and keeps focus on progress.",
-            "Implemented a responsive experience optimized for both desktop and mobile devices.",
-            "Used modern UI components and deployed on Vercel for fast, globally available performance.",
+            "Decouples API ingress from background execution using Redis-backed BullMQ queues and persistent PostgreSQL state.",
+            "Supports horizontal worker scaling across compute workloads (matrices, primes, fibonacci) with graceful shutdown.",
+            "End-to-end job lifecycle tracking with pagination, status queries, queued job cancellation, and runtime Zod validation.",
+            "Containerized multi-service infrastructure with automated health and dependency readiness probes.",
         ],
-        link: "https://kaizen-phi-five.vercel.app/",
-        github: "https://github.com/Abhra0404/Kaizen",
-        accent: "purple",
+        link: "",
+        github: "https://github.com/Abhra0404/Distributed-Job-Processing-Platform",
+        accent: "cyan",
     },
     {
         id: "p3",
         num: "03",
-        title: "Theoria",
-        subtitle: "Infrastructure Monitoring Tool",
-        desc: "A full-stack monitoring platform that tracks uptime, latency, and health of services in real time, surfacing incidents through a clean operational dashboard.",
-        role: "Full Stack Engineering + System Design",
-        timeline: "2026",
-        status: "Live",
-        impact: "Gives teams real-time visibility into service health, reducing time-to-detect for outages and degradations.",
-        image: "",
-        stack: ["Node.js", "TypeScript", "GO", "Fastify"],
+        badge: "Medical AI & Vision",
+        title: "Multimodal 3D Brain Tumor MRI Segmentation",
+        subtitle: "Deep Learning Volumetric Segmentation",
+        desc: "3D brain tumor MRI segmentation using multimodal T1, T1-contrast, T2, and T2-FLAIR scans with PyTorch and MONAI, built on the BraTS-GLI dataset.",
+        image: "/brain.png",
+        stack: ["Python", "PyTorch", "MONAI", "NumPy", "Nibabel", "BraTS-GLI", "Matplotlib"],
         highlights: [
-            "Built a real-time monitoring pipeline to probe endpoints and record uptime, latency, and status history.",
-            "Designed an operational dashboard that visualizes service health, incidents, and historical trends at a glance.",
-            "Implemented alerting logic to flag downtime and anomalous response behavior as soon as it occurs.",
-            "Shipped a responsive, production-grade interface deployed on Vercel for global availability.",
+            "Trained and benchmarked 2D, 2.5D, and 3D U-Net architectures for voxel-level glioma sub-region segmentation.",
+            "Achieved 0.8508 tumor-slice Dice and 0.9277 pixel Dice with a strict patient-level split preventing data leakage.",
+            "Engineered 3D volumetric preprocessing: skull-stripped NIfTI ingestion, intensity normalization, and tumor-aware cropping.",
+            "Shipped an interactive slice prediction visualization dashboard hosted on GitHub Pages.",
         ],
-        link: "https://theoria-tool.vercel.app/",
-        github: "https://github.com/Abhra0404/Monitoring-tool",
+        link: "https://abhra0404.github.io/Multimodal-3D-Brain-Tumor-MRI-Segmentation/",
+        github: "https://github.com/Abhra0404/Multimodal-3D-Brain-Tumor-MRI-Segmentation",
+        accent: "purple",
+    },
+    {
+        id: "p4",
+        num: "04",
+        badge: "Agentic AI",
+        title: "Axiom",
+        subtitle: "Autonomous AI Research & Verification System",
+        desc: "An autonomous AI research system that plans investigations, gathers and evaluates sources, extracts evidence, analyzes claim relationships, and synthesizes structured reports.",
+        image: "",
+        stack: ["Python", "FastAPI", "LangChain", "LLMs", "Multi-Agent", "Vector Search", "Docker"],
+        highlights: [
+            "Multi-stage research pipeline orchestrating query planning, source search, and automated claim extraction.",
+            "Analyzes claim relationships across sources to identify duplicate, supporting, and contradictory arguments.",
+            "Critic agent feedback loop detecting knowledge gaps and triggering targeted follow-up search before report synthesis.",
+            "Source ranking engine combining relevance (70%) with publisher authority and quality scoring (30%).",
+        ],
+        link: "",
+        github: "https://github.com/Abhra0404/Axiom--Autonomous-AI-Research-System",
+        accent: "emerald",
+    },
+    {
+        id: "p5",
+        num: "05",
+        badge: "Full Stack & EdTech",
+        title: "Epoch",
+        subtitle: "Developer AI/ML Learning Platform",
+        desc: "A developer-focused AI/ML learning platform connecting structured notes, learning roadmaps, interactive experimentation, interview prep, and research.",
+        image: "/epoch.png",
+        stack: ["Next.js", "TypeScript", "Tailwind CSS", "React", "Prisma", "PostgreSQL", "Vercel"],
+        highlights: [
+            "Curated curriculum progressing from mathematical intuition to deep learning, transformers, and research papers.",
+            "Role-based learning roadmaps (ML Engineer, LLM Engineer, AI Researcher, MLOps) with concept prerequisites.",
+            "Interactive browser playground for hands-on algorithm experimentation, hyperparameter tuning, and model visualization.",
+            "Full-stack Next.js web application with a minimal dark developer aesthetic, deployed on Vercel.",
+        ],
+        link: "https://epoch-learn.vercel.app",
+        github: "https://github.com/Abhra0404/Epoch",
         accent: "cyan",
+    },
+    {
+        id: "p6",
+        num: "06",
+        badge: "Graph AI & RAG",
+        title: "GraphRAG",
+        subtitle: "Multi-Hop Knowledge Reasoning Engine",
+        desc: "A hybrid Retrieval-Augmented Generation system combining semantic vector retrieval, Neo4j knowledge graphs, and multi-hop reasoning for grounded answers.",
+        image: "",
+        stack: ["Python", "FastAPI", "Neo4j", "Qdrant", "Ollama", "PostgreSQL", "PyMuPDF", "Docker"],
+        highlights: [
+            "Combines Qdrant vector search with Neo4j graph traversal for hybrid semantic and topological evidence retrieval.",
+            "Achieved 99% exact-path recall on multi-hop benchmarks compared with 51% for vanilla vector RAG baselines.",
+            "Automated entity and relationship extraction from technical documents with source citation provenance using local LLMs.",
+            "Containerized multi-database stack (PostgreSQL, Neo4j, Qdrant) accessible through high-performance FastAPI endpoints.",
+        ],
+        link: "",
+        github: "https://github.com/Abhra0404/GraphRAG--Multi-Hop-Knowledge-Reasoning-Engine",
+        accent: "purple",
     },
 ];
 
 const accentBorder: Record<string, string> = {
-    emerald: "group-hover:border-emerald-500/50",
-    purple: "group-hover:border-purple-500/50",
-    cyan: "group-hover:border-cyan-500/50",
+    emerald: "border-emerald-500/20",
+    purple: "border-purple-500/20",
+    cyan: "border-cyan-500/20",
 };
 const accentText: Record<string, string> = {
     emerald: "text-emerald-400",
     purple: "text-purple-400",
     cyan: "text-cyan-400",
 };
-const accentGlow: Record<string, string> = {
-    emerald: "rgba(16,185,129,0.08)",
-    purple: "rgba(168,85,247,0.08)",
-    cyan: "rgba(6,182,212,0.08)",
-};
 
 function Projects() {
-    const [selectedProject, setSelectedProject] = useState<(typeof PROJECTS)[number] | null>(null);
-
-    useEffect(() => {
-        if (!selectedProject) {
-            return;
-        }
-
-        const handleEsc = (event: KeyboardEvent) => {
-            if (event.key === "Escape") {
-                setSelectedProject(null);
-            }
-        };
-
-        document.body.style.overflow = "hidden";
-        window.addEventListener("keydown", handleEsc);
-
-        return () => {
-            document.body.style.overflow = "";
-            window.removeEventListener("keydown", handleEsc);
-        };
-    }, [selectedProject]);
-
     return (
         <section id="projects" className="py-24 md:py-36 px-4 sm:px-6 md:px-12">
             <div className="max-w-7xl mx-auto">
-                <FadeUp className="mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+                <FadeUp className="mb-14 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
                     <div>
                         <SectionLabel>Projects</SectionLabel>
                         <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tighter">
@@ -986,228 +1006,125 @@ function Projects() {
                     </a>
                 </FadeUp>
 
-                <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
+                <div className="grid md:grid-cols-2 gap-5 sm:gap-6 max-w-6xl mx-auto">
                     {PROJECTS.map((p, i) => (
-                        <FadeUp key={p.id} delay={i * 0.1}>
+                        <FadeUp key={p.id} delay={i * 0.08}>
                             <motion.div
-                                role="button"
-                                tabIndex={0}
-                                onClick={() => setSelectedProject(p)}
-                                onKeyDown={(event) => {
-                                    if (event.key === "Enter" || event.key === " ") {
-                                        event.preventDefault();
-                                        setSelectedProject(p);
-                                    }
-                                }}
-                                whileHover={{ y: -6 }}
+                                whileHover={{ y: -4 }}
                                 transition={{ duration: 0.25 }}
-                                className={`group relative h-full flex flex-col p-5 sm:p-7 bg-zinc-900/30 border border-white/8 rounded-xl transition-all duration-300 overflow-hidden cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/40 ${accentBorder[p.accent]}`}
-                                style={{ boxShadow: `0 0 0 0 ${accentGlow[p.accent]}` }}
-                                whileInView={{ boxShadow: `0 20px 60px -20px ${accentGlow[p.accent]}` }}
-                                viewport={{ once: true }}
+                                className={`group flex flex-col h-full rounded-xl border bg-zinc-900/40 overflow-hidden transition-all duration-300 ${accentBorder[p.accent]}`}
                             >
-                                {/* number */}
-                                <span className={`font-mono text-xs ${accentText[p.accent]} mb-4`}>
-                                    {p.num}
-                                </span>
+                                {/* Project Image / Tech Preview Header */}
+                                <div className="relative w-full aspect-[16/9] overflow-hidden bg-zinc-950 flex-shrink-0 border-b border-white/6">
+                                    {p.image ? (
+                                        <Image
+                                            src={p.image}
+                                            alt={`${p.title} preview`}
+                                            fill
+                                            className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full relative flex flex-col justify-between p-4 bg-gradient-to-br from-zinc-900/80 via-zinc-950 to-zinc-900/30">
+                                            {/* Top window dots & badge */}
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-1.5 opacity-40">
+                                                    <span className="w-2 h-2 rounded-full bg-white/40" />
+                                                    <span className="w-2 h-2 rounded-full bg-white/40" />
+                                                    <span className="w-2 h-2 rounded-full bg-white/40" />
+                                                </div>
+                                                <span className={`font-mono text-[10px] uppercase tracking-widest px-2 py-0.5 rounded border border-white/8 bg-white/3 ${accentText[p.accent]}`}>
+                                                    {p.num} &bull; {p.badge}
+                                                </span>
+                                            </div>
 
-                                <h3 className="text-2xl font-bold text-white tracking-tight mb-1">{p.title}</h3>
-                                <p className={`font-mono text-xs ${accentText[p.accent]} mb-4`}>{p.subtitle}</p>
-                                <p className="text-zinc-400 text-sm leading-relaxed flex-1 mb-6">{p.desc}</p>
+                                            {/* Center icon & project title */}
+                                            <div className="my-auto py-2 flex flex-col items-center justify-center text-center px-4">
+                                                <div className={`w-9 h-9 rounded-lg flex items-center justify-center mb-2 border border-white/10 bg-white/4 transition-transform group-hover:scale-110 duration-300 ${accentText[p.accent]}`}>
+                                                    <Terminal className="w-4 h-4" />
+                                                </div>
+                                                <span className="text-white font-bold text-sm sm:text-base tracking-tight line-clamp-1">{p.title}</span>
+                                                <span className="text-zinc-500 font-mono text-[11px] mt-0.5 line-clamp-1">{p.subtitle}</span>
+                                            </div>
 
-                                {/* Stack */}
-                                <div className="flex flex-wrap gap-2 mb-6">
-                                    {p.stack.map((t) => (
-                                        <span
-                                            key={t}
-                                            className="px-2 py-0.5 bg-white/5 border border-white/10 text-zinc-400 text-[11px] font-mono rounded"
-                                        >
-                                            {t}
-                                        </span>
-                                    ))}
+                                            {/* Bottom bar indicator */}
+                                            <div className="flex items-center justify-between text-[10px] font-mono text-zinc-500">
+                                                <span className="flex items-center gap-1.5">
+                                                    <span className={`w-1.5 h-1.5 rounded-full ${accentText[p.accent]}`} style={{ background: "currentColor" }} />
+                                                    github.com/Abhra0404
+                                                </span>
+                                                <span className="opacity-60">{p.stack[0]} &bull; {p.stack[1]}</span>
+                                            </div>
+                                        </div>
+                                    )}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/70 via-transparent to-transparent pointer-events-none" />
                                 </div>
 
-                                {/* Details hint */}
-                                <div className="flex items-center justify-between pt-4 border-t border-white/6 text-xs font-mono uppercase tracking-widest">
-                                    <span className="text-zinc-500">Tap for details</span>
-                                    <span className="inline-flex items-center gap-1.5 text-emerald-300/85">
-                                        View <ArrowUpRight className="w-3.5 h-3.5" />
-                                    </span>
+                                {/* Card Body */}
+                                <div className="flex flex-col flex-1 p-4 sm:p-5">
+                                    {/* Title */}
+                                    <h3 className="text-base sm:text-lg font-bold text-white tracking-tight mb-2.5">
+                                        {p.title} &ndash;{" "}
+                                        <span className="font-medium text-zinc-300">{p.subtitle}</span>
+                                    </h3>
+
+                                    {/* Highlights as bullet points */}
+                                    <ul className="space-y-1.5 mb-4 flex-1">
+                                        {p.highlights.map((point) => (
+                                            <li key={point} className="flex items-start gap-2 text-zinc-400 text-xs sm:text-[13px] leading-relaxed">
+                                                <span className={`mt-[6px] w-1.5 h-1.5 rounded-full flex-shrink-0 bg-current ${accentText[p.accent]}`} />
+                                                <span>{point}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+
+                                    {/* Tech Stack Pills */}
+                                    <div className="flex flex-wrap gap-1.5 mb-4">
+                                        {p.stack.map((tech) => (
+                                            <span
+                                                key={tech}
+                                                className="px-2 py-0.5 bg-white/5 border border-white/10 text-zinc-400 text-[10px] font-mono rounded"
+                                            >
+                                                {tech}
+                                            </span>
+                                        ))}
+                                    </div>
+
+                                    {/* Links */}
+                                    <div className="flex items-center gap-4 pt-3 border-t border-white/8 text-xs font-medium">
+                                        {p.link && (
+                                            <a
+                                                href={p.link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="inline-flex items-center gap-1.5 text-zinc-300 hover:text-white transition-colors"
+                                            >
+                                                Live Demo <ExternalLink className="w-3.5 h-3.5" />
+                                            </a>
+                                        )}
+                                        {p.github && (
+                                            <a
+                                                href={p.github}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="inline-flex items-center gap-1.5 text-zinc-300 hover:text-white transition-colors"
+                                            >
+                                                GitHub <ArrowUpRight className="w-3.5 h-3.5" />
+                                            </a>
+                                        )}
+                                    </div>
                                 </div>
                             </motion.div>
                         </FadeUp>
                     ))}
                 </div>
-
-                {selectedProject && (
-                    <div
-                        className="fixed inset-0 z-60 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
-                        onClick={() => {
-                            setSelectedProject(null);
-                        }}
-                    >
-                        <div
-                            className="w-full max-w-3xl max-h-[88vh] overflow-y-auto rounded-2xl border border-emerald-500/25 bg-zinc-950 p-5 sm:p-7 shadow-[0_20px_60px_rgba(0,0,0,0.45)]"
-                            onClick={(event) => event.stopPropagation()}
-                            role="dialog"
-                            aria-modal="true"
-                            aria-label="Project detail view"
-                        >
-                            <div className="flex items-start justify-between gap-4 mb-5 pb-4 border-b border-white/8">
-                                <div>
-                                    <p className="font-mono text-[11px] uppercase tracking-widest text-emerald-300 mb-2">
-                                        Project Details
-                                    </p>
-                                    <h3 className="text-2xl sm:text-3xl font-semibold text-zinc-100 tracking-tight">
-                                        {selectedProject.title}
-                                    </h3>
-                                    <p className={`mt-1 font-mono text-xs ${accentText[selectedProject.accent]}`}>
-                                        {selectedProject.subtitle}
-                                    </p>
-                                </div>
-
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setSelectedProject(null);
-                                    }}
-                                    className="p-1.5 rounded-md text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors"
-                                    aria-label="Close popup"
-                                >
-                                    <X className="w-4 h-4" />
-                                </button>
-                            </div>
-
-                            <p className="text-zinc-300/90 text-sm sm:text-base leading-relaxed mb-6">
-                                {selectedProject.desc}
-                            </p>
-
-                            <div className="mb-6">
-                                <p className="font-mono text-[11px] uppercase tracking-widest text-zinc-500 mb-3">
-                                    {selectedProject.link ? "Live Preview" : "Project Image"}
-                                </p>
-                                <div className={`w-full rounded-xl border border-white/10 bg-zinc-900/75 overflow-hidden ${selectedProject.link ? "relative h-[70vh]" : "aspect-video"}`}>
-                                    {selectedProject.link ? (
-                                        <iframe
-                                            src={selectedProject.link}
-                                            title={`${selectedProject.title} live preview`}
-                                            className="absolute top-0 left-0 border-0 origin-top-left"
-                                            style={{ width: "1440px", height: "900px", transform: "scale(var(--iframe-scale))" }}
-                                            sandbox="allow-scripts allow-same-origin"
-                                            loading="lazy"
-                                            ref={(el) => {
-                                                if (!el) return;
-                                                const parent = el.parentElement;
-                                                if (!parent) return;
-                                                const scale = parent.clientWidth / 1440;
-                                                el.style.setProperty("--iframe-scale", String(scale));
-                                                parent.style.height = `${900 * scale}px`;
-                                            }}
-                                        />
-                                    ) : selectedProject.image ? (
-                                        <Image
-                                            src={selectedProject.image}
-                                            alt={`${selectedProject.title} preview`}
-                                            width={1280}
-                                            height={720}
-                                            className="w-full h-full object-cover object-top"
-                                        />
-                                    ) : (
-                                        <div className="w-full h-full flex items-center justify-center text-center px-4 bg-linear-to-br from-white/5 to-transparent">
-                                            <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed">
-                                                Add image URL in this project&apos;s <span className="text-zinc-300 font-mono">image</span> field
-                                                to show preview here.
-                                            </p>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-
-                            <div className="grid sm:grid-cols-2 gap-3 mb-6">
-                                <div className="rounded-lg border border-white/10 bg-white/3 p-3.5">
-                                    <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest mb-1">Role</p>
-                                    <p className="text-zinc-200 text-sm">{selectedProject.role}</p>
-                                </div>
-                                <div className="rounded-lg border border-white/10 bg-white/3 p-3.5">
-                                    <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest mb-1">Timeline</p>
-                                    <p className="text-zinc-200 text-sm">{selectedProject.timeline}</p>
-                                </div>
-                                <div className="rounded-lg border border-white/10 bg-white/3 p-3.5">
-                                    <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest mb-1">Status</p>
-                                    <p className="text-zinc-200 text-sm">{selectedProject.status}</p>
-                                </div>
-                                <div className="rounded-lg border border-white/10 bg-white/3 p-3.5">
-                                    <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest mb-1">Impact</p>
-                                    <p className="text-zinc-200 text-sm leading-relaxed">{selectedProject.impact}</p>
-                                </div>
-                            </div>
-
-                            <div className="mb-6">
-                                <p className="font-mono text-[11px] uppercase tracking-widest text-zinc-500 mb-3">Highlights</p>
-                                <ul className="space-y-2.5">
-                                    {selectedProject.highlights.map((point) => (
-                                        <li key={point} className="flex items-start gap-2.5 text-zinc-300 text-sm leading-relaxed">
-                                            <span className="text-emerald-400 mt-1">•</span>
-                                            <span>{point}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-
-                            <div className="mb-6">
-                                <p className="font-mono text-[11px] uppercase tracking-widest text-zinc-500 mb-3">Tech Stack</p>
-                                <div className="flex flex-wrap gap-2">
-                                {selectedProject.stack.map((tech) => (
-                                    <span
-                                        key={tech}
-                                        className="px-2 py-0.5 bg-white/5 border border-white/10 text-zinc-400 text-[11px] font-mono rounded"
-                                    >
-                                        {tech}
-                                    </span>
-                                ))}
-                                </div>
-                            </div>
-
-                            <div className="flex flex-wrap items-center justify-end gap-2 pt-5 border-t border-white/8">
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setSelectedProject(null);
-                                    }}
-                                    className="px-4 py-2 rounded-lg border border-white/12 bg-zinc-900/80 text-zinc-300 hover:text-white transition-colors font-mono text-xs tracking-widest uppercase"
-                                >
-                                    Cancel
-                                </button>
-                                {selectedProject.github && (
-                                    <a
-                                        href={selectedProject.github}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-emerald-500/35 bg-emerald-500/12 text-emerald-300 hover:text-emerald-200 transition-colors font-mono text-xs tracking-widest uppercase"
-                                    >
-                                        Source <Github className="w-3.5 h-3.5" />
-                                    </a>
-                                )}
-                                {selectedProject.link && (
-                                    <a
-                                        href={selectedProject.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-cyan-500/35 bg-cyan-500/12 text-cyan-300 hover:text-cyan-200 transition-colors font-mono text-xs tracking-widest uppercase"
-                                    >
-                                        Live Demo <ExternalLink className="w-3.5 h-3.5" />
-                                    </a>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                )}
             </div>
         </section>
     );
 }
 
+
 /* ─────────────────────────── contact ─────────────────────────── */
+
 
 function Contact() {
     const [copied, setCopied] = useState(false);
